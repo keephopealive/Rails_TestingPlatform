@@ -20,10 +20,9 @@ class TestsController < ApplicationController
   end
 
   def results
-    puts params[:score];
-    puts params;
-
-    render :text => "RESULTS";
+    puts params.inspect
+    puts YAML::dump(params)
+    render :text => "RESULTS"
   end
 
   def show # Show Test Results
