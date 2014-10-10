@@ -1,0 +1,178 @@
+<h1>Tests#new</h1>
+<p>Find me in app/views/tests/new.html.erb</p>
+
+<script type="text/javascript">
+    $(function() {
+        sessionStorage.setItem('timer', null)
+        var myid = 0;
+        $('.questions').not('#question_no'+ myid).hide();
+        $('#completed').hide();
+                
+        // Interval Event
+        var updateTimer = function(myTimeCheck) {
+
+            timer = sessionStorage.getItem('timer');
+            if ( timer == 0 ) {
+                $('#nextquestion').trigger('click');
+            }
+            else if ( timer == null ){
+
+            }
+            // else if ( timer > )
+            // {
+            //     $('.container').html("Cheaters never made it to the finish line with my code... try again.");
+            // }
+            else {
+               timer = timer - 1;
+               sessionStorage.setItem('timer', timer);
+              $("span#timer").html(timer);
+            }
+        };
+
+        
+
+        // Click Start Test (First Question)
+        $("#start").click( function() {
+            var timelimit = <%= @questions.first.timelimit %>;
+            sessionStorage.setItem('timer', timelimit);
+            myid = 1;
+            $('.questions').not('#question_no'+ myid).hide();
+            $('#question_no' + myid).show();
+            $("#start").hide();
+        });
+        
+        // Click Next Question 
+        $(document).on('click', '#nextquestion', function(){
+            myid ++;
+            if($('#question_no' + myid).length > 0) // if it exists...
+            {
+                var myTimeCheck = sessionStorage.setItem('timer', $('#timelimit_q'+ myid).html()); 
+                $('.questions').not('#question_no'+ myid).hide();
+                $('#question_no' + myid).show();
+            }
+            else // if questions run out and next question div does not exist...
+            {
+                $('#question_no' + (myid-1)).hide();
+                $('#completed').show();
+                $.post("/results", $(this).serialize(), function(returned_data){
+                    $('#completed').html(returned_data);
+                });
+                clearInterval(myTimer);
+                return false;
+            } 
+        });
+
+        // Warn user if RELOAD occurs - Test will be marked incomplete.
+        window.onbeforeunload = function() {
+            if(myid > 0)
+                return "Test progress will be lost/marked incomplete if you leave the page, are you sure?";
+        };
+
+        var myTimer = setInterval(updateTimer, 1000);
+    });    
+</script>
+
+	<title>User - Test</title>
+</head>
+<body>
+
+<div class="container">
+
+	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
+		<div class="col-xs-12 formatted-div">        
+            <div class="row">     
+                <div class="col-xs-6 site-logo"> 
+                    <h1>Testing Platform</h1>
+                </div>
+                <div class="col-xs-6">
+                    <br>
+                    <a href="#" id="start"class="btn btn-success btn-lg padding5">Begin Test!</a>
+                    <a href="/Users/kratos/Desktop/TestingPlatform/index.html" class="btn btn-default">Logout</a>
+                </div>
+            </div>			
+		</div>
+	</div> <!-- END SECTION: NAVIGATION ROW -->
+
+	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
+		<div class="col-xs-12 formatted-div">
+            <div class="row">
+                <div class="col-xs-6 padding5">
+                    <div class="col-xs-4">
+                        <label>Test Name:</label><br>
+                        <label>Test ID:</label>
+                    </div>
+                    <div class="col-xs-8 font-black">
+                        <label><%= @test.name %></label><br>
+                        <label><%= @test.id %></label><br>
+                    </div>
+                </div>
+                <div class="col-xs-6 padding5">
+                    <div class="col-xs-4 ">
+                        <label>Name:</label><br>
+                        <label># of Questions:</label><br>
+                    </div>
+                    <div class="col-xs-8 font-black">
+                        <label><%= session[:first_name] %></label><label><%= session[:last_name] %></label><br>
+                        <label><%= session[:testSize] %></label>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div> <!-- END SETION: TEST DETAILS ROW -->
+
+
+	<div class="row" id="question_div"> <!-- SECTION: QUESTION ANSWERS & OPTIONS ROW -->
+        <form method="post" action="/results">
+<% @questions.each  do |question| %>
+            <div id="question_no<%= question.id %>" class='col-xs-12 formatted-div questions'>
+                <div class='row'>
+                    <div class='col-xs-6'>
+                        <h3>Question <%= question.id %> / <%= question.id.size %> </h3>
+                    </div><div class='col-xs-3'>
+                    <h3>Time-Left: <span id='timer'></span>/<span id='timelimit_q<%=question.id%>'><%= question.timelimit %></span></h3>
+                </div>
+                <div class='col-xs-3'>
+                    <div id='countdowntimer'>
+                        <span id='future_date'></span>
+                    </div>
+                </div>
+            </div>
+            <div class='row'> 
+                <div class='col-xs-12'>
+                    <div class='question'>
+                        <textarea readonly><%= question.question %></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class='row padding15'>
+                <div class='col-xs-8'>
+                    <ul class='user-answers'>
+
+        <% question.answers.each do |answer| %>
+                        <li id="question_no<%= question.id %>_answer_no<%= answer.id%>" class='answer'>
+                            <label for='answer<%= answer.id %>'>
+                                <input type='radio' id='answer<%= answer.id %>' class='radio_btn' name='answer_to_question<%= question.id %>'><%= answer.answer %>
+                            </label>
+                        </li>
+        <% end %>
+                    </ul>
+                </div> 
+                <div class='col-xs-4'> 
+                    <a href='#' id='nextquestion' class='btn btn-primary padding15'>Click for Next Question <br>( <span class='countdown_timer'></span> seconds remaining)</a>
+                </div>
+            </div>
+        </div>
+<% end %>
+    </form>
+    </div> <!-- END SECTION: QUESTION ANSWERS & OPTIONS ROW -->
+    <div id="completed" class="row">
+        <div class="col-xs-12 formatted-div">
+            <div>
+                <h3>Test has been completed</h3>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+    </script>
+</div>

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  question: MyString
+  timelimit: 1
+  test_id: 1
+
+two:
+  question: MyString
+  timelimit: 1
+  test_id: 1

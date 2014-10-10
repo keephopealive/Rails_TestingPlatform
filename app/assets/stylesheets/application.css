@@ -1,0 +1,234 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require_bootstrap
+ */
+/* ALL */
+@import 'bootstrap';
+
+div.container {
+  width: 1000px;
+  text-align: top;
+  margin: 0 auto;
+}
+
+/* GLOBAL CLASSES */
+div.formatted-div {
+      margin: 5px auto;
+      padding: 10px;
+      background-color: rgb(39,128,166);
+      color: rgb(247,247,247);
+      border-radius: 4px;
+      text-align: center;
+      border: 2px solid rgb(55,55,55);
+}
+div.questions-div {
+      margin: 5px auto;
+      padding: 10px;
+      background-color: rgb(39,158,156);
+      color: rgb(247,247,247);
+      border-radius: 4px;
+      text-align: center;
+      border: 2px solid rgb(55,55,55);
+}
+input{
+  color: black;
+}
+.wide50{
+  width: 50%;
+}
+.wide40{
+  width: 40%;
+}
+.vertical-align-center{
+    vertical-align: center;
+    margin-top: 15px;
+}
+.padding5{
+    padding: 5px;
+}
+.font-black{
+    color: black;
+}
+.wide100{
+    width: 100%;
+}
+.wide50{
+    width: 50%;
+}
+.highlight{
+    background: rgb(100,255,100);
+}
+.questions-div{
+  background-color: rgb(1,1,1);
+}
+
+/* HEADER RELATED */
+    div.site-logo{
+        margin: 0px;
+        padding: 0px
+    }
+    nav.navigation{
+    margin: 15px
+    }
+
+
+/* QUESTION RELATED */
+    div.question {
+      border: 1px solid black;
+      padding: 5px;
+      margin: 10px;
+    }
+    div.question textarea{
+      width: 100%;
+      min-height: 50px;
+      text-align: left;
+    }
+    div.question{
+        background-color: rgb(247,247,247);
+        color: rgb(55,55,55);
+        text-align: left;
+        padding: 15px;
+    }
+    
+
+
+
+
+/* ANSWERS */
+    div.answers input {
+      padding-left: 4px;
+      font-size: .8em;
+      font-weight: bold;
+    }
+    div.answers input.answer {
+      width: 305px; 
+    }
+    .radio_btn{
+        height: 18px;
+        width: 18px;
+    }
+    
+
+    #first-answer{
+      margin-right: 25px;
+    }
+    .answer_option{
+        width: 100px;
+        height: 100px;
+    }
+
+    .boxed-answer{ /* REMOVE TO CHANGE ANSWER EFFECT */
+      background-color: rgb(247,247,247);
+      color: rgb(55,55,55);
+      border: 1px solid black;
+      border-radius: 3px;
+      margin-top: 4px;
+    }
+    .highlight{
+        background-color: yellow;
+    }
+    div.answers{
+      padding: 5px;
+    }
+    button.add-answer{
+      margin-left: 40px;
+      width: 383px;
+    }
+    .content-description
+    {
+        text-align: left;
+        padding: 20px;
+        border-radius: 5px;
+        background-color: rgb(55,75,112);
+        font-size: 1.1em;
+        
+    }
+#future_date{
+    height: 50px;
+    width: 50px;
+}
+    label.answer{
+      padding: 3px;
+    }
+    .answer{
+        text-align: left;
+    }
+    .answeroption{
+        padding-left: 30px;
+    }
+    .timelimit-ending{
+        color: rgb(255,100,100);
+        font-weight: bold;
+    }
+    .wide100{
+        width: 100%;
+    }
+    .wide80{
+        width: 80%;
+    }
+    .take_create_test_btn{
+        margin: 10px;
+    }
+
+    ol.ol-questions{
+        list-style: none;
+        padding-left:0;
+        padding-left:30px;
+        padding-right:30px;
+        padding-top: 0px;
+    }
+
+    .user-test-results-test-details{
+        font-size: 1.5em;
+    }
+
+    #sortable { 
+      list-style-type: none; 
+      width: 100%; 
+    }
+    .right-answer{
+      background-color: rgb(185,255,255);
+    }
+
+/* OPTIONS */
+    div.options .top{
+      padding: 5px;
+      padding-top: 15px;
+    }
+    div.options button{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .padding15{
+      padding: 15px;
+    }
+
+
+    .index-lis{
+        text-align: left;
+    }
+
+
+
+.table-results{
+    color: black;
+    background-color: white;
+}
+input.timelimit {
+    color: black;
+}
+ul.user-answers li{
+    list-style: none;
+}

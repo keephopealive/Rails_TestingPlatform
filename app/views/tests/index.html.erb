@@ -1,0 +1,94 @@
+<h1>Tests#index LANDING PAGE </h1>
+<p>Find me in app/views/tests/index.html.erb</p>
+
+<div class="container">
+
+	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
+		<div class="col-xs-12 formatted-div">        
+            <div class="row">     
+                <div class="col-xs-6"> 
+                   <div class="site-logo">
+                        <h1>Testing Platform</h1>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <nav class="navigation padding15">
+                    </nav>		
+                </div>
+            </div>
+		</div>
+	</div> <!-- END SECTION: NAVIGATION ROW -->
+
+	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
+		<div class="col-xs-12 formatted-div">
+            <div class="row">
+                <div class="col-xs-12">
+                    <p class="content-description">Welcome to the Testing Platform, you can easily take a test, or create a test of your own. Be sure to review the test description before starting - tests could include time limits for each question. Good luck! </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 ">
+                    <h3>Take a Test:</h3>
+
+                    <form method="post" action="/tests">
+                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                        <div class="row">
+                            <div class="col-xs-6">
+                              <div class="padding5">
+                                  <label for=""> Select Test: </label>
+                              </div>
+                               <div class="padding15">
+                                    <label for="">First Name: </label><br>
+                                </div>
+                                <div class="padding5">
+                                <label for="">Last Name: </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 ">
+                              <div class="padding5">
+
+                                <select name="test_name" class="form-control">
+                                <% @alltests.each do |test|   %>
+                                    <option value="<%= test.name %>"><%= test.name %></option>
+                                <% end %>
+                                </select>    
+                              </div>
+                               <div class="padding5">
+                                <input type="text" name="first_name" class="wide100">
+                                </div>
+                                <div class="padding5">
+                                <input type="text" name="last_name" class="wide100">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" value="Take a Test" class="btn btn-success take_create_test_btn wide80">
+                    </form>
+                    
+                </div>
+                <div class="col-xs-6">
+                   <h3>Create a Test:</h3>
+                   <div class="row">
+                        <div class="col-xs-6">
+                           <div class="padding5">
+                                <label for="">Email: </label><br>
+                            </div>
+                            <div class="padding5">
+                                <label for="">Password: </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 ">
+                           <div class="padding5">
+                            <input type="text" class="wide100">
+                            </div>
+                            <div class="padding5">
+                            <input type="text" class="wide100">
+                            </div>
+                        </div>
+                    </div>
+                    <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-index.html" class="btn btn-primary take_create_test_btn wide80">Login</a>                    
+                </div>
+            </div>
+		</div>
+	</div> <!-- END SETION: TEST DETAILS ROW -->
+    
+</div>

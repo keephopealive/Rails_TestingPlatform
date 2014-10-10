@@ -1,0 +1,83 @@
+<h1>Admintests#index - DASHBOARD</h1>
+<p>Find me in app/views/admintests/index.html.erb</p>
+
+<div class="container">
+
+	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
+		<div class="col-xs-12 formatted-div">                    
+            <div class="row">     
+                <div class="col-xs-6"> 
+                   <div class="site-logo">
+                        <h1>Testing Platform - Admin</h1>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <nav class="navigation">
+                        <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-index.html" class="btn btn-default">Home</a>
+                        <a href="/Users/kratos/Desktop/TestingPlatform/admin-results.html" class="btn btn-default">Results</a>
+                        <a href="/Users/kratos/Desktop/TestingPlatform/landingpage.html" class="btn btn-default">Logout</a>
+                    </nav>		
+                </div>
+            </div>
+		</div>
+	</div> <!-- END SECTION: NAVIGATION ROW -->
+
+	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
+		<div class="col-xs-12 formatted-div">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div>
+                        <h3>Generate New Test:</h3>
+                    </div>    
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="">Test Name:</label>
+                       <input class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for=""></label>
+                    <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-new.html" class="btn btn-success form-control">Create a Test</a>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div> <!-- END SETION: TEST DETAILS ROW -->
+    
+    <div class="row">
+        <div class="col-xs-12 formatted-div">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Name</td>
+                                <td>Timed</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>CodingChallenge 202</td>
+                            <td>Yes</td>
+                            <td>
+                                <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-new.html" class="btn btn-warning">Edit</a>  
+                                 <a href="#" class="btn btn-danger destroy_test">Destroy</a>
+                            </td>
+                        </tr>
+                        <tr id="test2">
+                            <td>CodingChallenge 202</td>
+                            <td>Yes</td>
+                            <td>
+                                <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-new.html" class="btn btn-warning">Edit</a>  
+                                 <a href="#" class="btn btn-danger destroy_test">Destroy</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
