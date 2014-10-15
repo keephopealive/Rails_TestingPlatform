@@ -55,11 +55,13 @@ class TestsController < ApplicationController
       end
     end
 
-    countTotalQuestions = countCorrect.to_i + countIncorrect.to_i
+    countTotalQuestions = (countCorrect.to_f + countIncorrect.to_f)
     countScore = "#{countCorrect} / #{countTotalQuestions}"
     test_number = "#{session[:testID]}"
-    percentGrade = countCorrect.to_i / countTotalQuestions
-
+    percentGradetemp = countCorrect/countTotalQuestions
+    (percentGradetemp).round(2)
+    percentGrade = percentGradetemp * 100
+    finalGrade = percentGrade.round(2)
     xml_markup = Builder::XmlMarkup.new
     xml_markup.instruct! :xml, :encoding => "UTF-8", :version => "1.0"
     xml_markup.student do |student|
@@ -74,7 +76,8 @@ class TestsController < ApplicationController
 
     Result.create(:test_id=>session[:testID], :xml_result => xml_markup)
 
-    render :text => "RESULTS"
+
+    render :text => "<div class='formatted-div'><h3>Score Results</h3><h5>Number of Correct: #{countCorrect}</h5><h5>Number of Incorrect: #{countIncorrect}</h5><h2>Final Score: #{finalGrade}%</h2></div>"
   end
 
   def show # Show Test Results
