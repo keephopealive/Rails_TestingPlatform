@@ -5,6 +5,7 @@ gem 'hirb'
 # Adds Footnotes
 gem 'rails-footnotes', '>= 4.0.0', '<5'
 gem 'bootstrap-sass', '~>3.1.1'
+gem 'builder', '~> 3.2.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'

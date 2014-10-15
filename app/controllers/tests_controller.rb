@@ -1,5 +1,6 @@
 class TestsController < ApplicationController
-  
+  require 'builder'
+
   def index # Landing Page
   	# Take Test Form Redirect to Create
   	@alltests = Test.all
@@ -16,6 +17,7 @@ class TestsController < ApplicationController
   def new # New Test
   	@test = Test.find_by_name(session[:test_name])
     session[:testNo] = Test.find(@test.id)
+    session[:testID] = @test.id.to_i
     session[:testSize] = @test.questions.count
     @questions = @test.questions 
   end
@@ -24,58 +26,53 @@ class TestsController < ApplicationController
     puts "- - PARAMS - - "
     puts YAML::dump(params)
     puts "- - END OF PARAMS - - "
-    
-    # if params[0]
-
-    # Param 0 == Test ID
-    # Test.first.answers.where(:correct=>true).each do |answer|
-    #   answer.id
-    # end
-    
-    # Param 1.. == Test Questio ID
 
     @myArray = Array.new
     @myArray.push(1) # Push in Test ID
     Test.first.answers.select(:id, :question_id).where(:correct=>true).each do |line| 
       @myArray.push(line.id) # Push in Answer # for each question inline.
     end
-    puts "Correct Answer Array: #{@myArray}"
 
-    @myArray.each_with_index { |x, index|
-
-    }
+    countCorrect = 0;
+    countIncorrect = 0;
 
     params.each_with_index do |param, index|
       puts " "
       if index > 0 && index <= session[:testSize].to_i
-        puts " - - - - = = = = Question = = = = - - - - "
-        puts "Question ##{param[0]} (presented to user)"
-        puts "Answer ##{param[1]} (chosen by user)"
-        puts "Actual ##{@myArray.at(index).to_i} (actual answer)"
+        puts " - - - - = = = = Question ##{param[0]} = = = = - - - - "
+        puts "Question: ##{param[0]} (presented to user)"
+        puts "Answer: ##{param[1]} (chosen by user)"
+        puts "Actual: ##{@myArray.at(index).to_i} (actual answer)"
         if param[1].to_i === @myArray.at(index).to_i
-          puts "- = CORRECT = -"
+          puts "Result: - = CORRECT = -"
+          countCorrect += 1
         else
-          puts "- = INCORRECT = -"
+          puts "Result: - = INCORRECT = -"
+          countIncorrect += 1
         end
         puts " - - - - = = = = END = = = = - - - - "
         puts " "
       end
-
-    #   puts " ARRAY #{@myArray[index]}"
-      # if param[0] != '0'
-    #     puts "index #{index} key #{param[0]} value #{param[1]}"
-    #     if @myArray[index] == param[1]
-    #       puts "CORRECT #{@myArray[index]} #{param[1]}"
-    #     else
-    #       puts "INCORRECT"
-    #     end
-    #     # This is the test ID = param[1]
-    #   else 
-    #     # Test.first.answers.where(:correct=>true, :question_id=>param[0]).id
-    #     puts "TEST NUMBER index #{index} key #{param[0]} value #{param[1]}"
-    #   end
     end
 
+    countTotalQuestions = countCorrect.to_i + countIncorrect.to_i
+    countScore = "#{countCorrect} / #{countTotalQuestions}"
+    test_number = "#{session[:testID]}"
+    percentGrade = countCorrect.to_i / countTotalQuestions
+
+    xml_markup = Builder::XmlMarkup.new
+    xml_markup.instruct! :xml, :encoding => "UTF-8", :version => "1.0"
+    xml_markup.student do |student|
+      student.first_name("#{session[:first_name]}")
+      student.last_name("#{session[:last_name]}")
+      student.test_number("#{test_number}")
+      student.totalQuestions("#{countTotalQuestions}")
+      student.totalCorrect("#{countCorrect}")
+      student.totalIncorrect("#{countIncorrect}")
+      student.grade("#{percentGrade}")
+    end
+
+    Result.create(:test_id=>session[:testID], :xml_result => xml_markup)
 
     render :text => "RESULTS"
   end
