@@ -46,13 +46,19 @@ class TestsController < ApplicationController
     }
 
     params.each_with_index do |param, index|
+      puts " "
       if index > 0 && index <= session[:testSize].to_i
+        puts " - - - - = = = = Question = = = = - - - - "
+        puts "Question ##{param[0]} (presented to user)"
+        puts "Answer ##{param[1]} (chosen by user)"
+        puts "Actual ##{@myArray.at(index).to_i} (actual answer)"
         if param[1].to_i === @myArray.at(index).to_i
-          puts "ANSWER CORRECT #{@myArray.at(index)}"
+          puts "- = CORRECT = -"
         else
-          puts "ANSWER INCORRECT"
+          puts "- = INCORRECT = -"
         end
-
+        puts " - - - - = = = = END = = = = - - - - "
+        puts " "
       end
 
     #   puts " ARRAY #{@myArray[index]}"
