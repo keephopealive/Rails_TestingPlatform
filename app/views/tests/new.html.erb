@@ -12,16 +12,17 @@
         var updateTimer = function(myTimeCheck) {
 
             timer = sessionStorage.getItem('timer');
-            if ( timer == 0 ) {
+            if ( timer == 999 )
+            {
+                timer = null;
+                $("span#timer").parent().html('Time-Left: No Limit');
+            }
+            else if ( timer == 0 ) {
                 $('#nextquestion').trigger('click');
             }
             else if ( timer == null ){
 
             }
-            // else if ( timer > )
-            // {
-            //     $('.container').html("Cheaters never made it to the finish line with my code... try again.");
-            // }
             else {
                timer = timer - 1;
                sessionStorage.setItem('timer', timer);
@@ -123,7 +124,9 @@
 
 	<div class="row" id="question_div"> <!-- SECTION: QUESTION ANSWERS & OPTIONS ROW -->
         <form method="post" action="/results" id="testForm">
+            <input type='hidden' name='0' value='<%= @test.id %>'>   
 <% @questions.each  do |question| %>
+            <!-- <input type='hidden' name="question_no" value="<%= question.id %>"> -->
             <div id="question_no<%= question.id %>" class='col-xs-12 formatted-div questions'>
                 <div class='row'>
                     <div class='col-xs-6'>
@@ -147,15 +150,16 @@
             <div class='row padding15'>
                 <div class='col-xs-8'>
                     <ul class='user-answers'>
-<!-- CHANGE LI / INPUT TO SELECT / OPTION --> <!-- CHANGE LI / INPUT TO SELECT / OPTION --> <!-- CHANGE LI / INPUT TO SELECT / OPTION -->
+
+                        <input type='hidden' name='<%= question.id %>' value="0">
         <% question.answers.each do |answer| %>
-                        <li id="question_no<%= question.id %>_answer_no<%= answer.id%>" class='answer'>
-                            <label for='answer<%= answer.id %>'>
-                                <input type='radio' id='answer<%= answer.id %>' class='radio_btn' name='answer_to_question<%= question.id %>'><%= answer.answer %>
+                        <!-- <input type='hidden' name="answer_no" value="<%= answer.id %>"> -->
+                        <li class='answer'>
+                            <label for='answer_id_<%= answer.id %>'>
+                                <input type='radio' id='answer_id_<%= answer.id %>' class='radio_btn' name='<%= question.id %>' value="<%= answer.id %>"><%= answer.answer %>
                             </label>
                         </li>
         <% end %>
-<!-- CHANGE LI / INPUT TO SELECT / OPTION --> <!-- CHANGE LI / INPUT TO SELECT / OPTION --> <!-- CHANGE LI / INPUT TO SELECT / OPTION -->
                     </ul>
                 </div> 
                 <div class='col-xs-4'> 
