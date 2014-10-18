@@ -3,6 +3,7 @@ class TestsController < ApplicationController
 
   def index # Landing Page
   	# Take Test Form Redirect to Create
+    reset_session
   	@alltests = Test.all
   end
 
@@ -71,7 +72,7 @@ class TestsController < ApplicationController
       student.totalQuestions("#{countTotalQuestions}")
       student.totalCorrect("#{countCorrect}")
       student.totalIncorrect("#{countIncorrect}")
-      student.grade("#{percentGrade}")
+      student.grade("#{finalGrade}")
     end
 
     Result.create(:test_id=>session[:testID], :xml_result => xml_markup)
@@ -83,5 +84,6 @@ class TestsController < ApplicationController
   def show # Show Test Results
    	  	
   end
+
 
 end

@@ -62,7 +62,10 @@ input{
     color: black;
 }
 .wide100{
-    width: 100%;
+  width: 100%;
+}
+.wide40{
+  width: 40%;
 }
 .wide50{
     width: 50%;
