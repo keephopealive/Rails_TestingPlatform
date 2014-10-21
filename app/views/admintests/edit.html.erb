@@ -1,13 +1,14 @@
 	<script type="text/javascript">
         $(function() {
-            $( "#sortable, #sortable2, #ol-questions-id" ).sortable();
-            $( "#sortable, #sortable2, #ol-questions-id" ).disableSelection();
+            // $( "#sortable, #sortable2, #ol-questions-id" ).sortable();
+            // $( "#sortable, #sortable2, #ol-questions-id" ).disableSelection();
         
             if(_answerIndex == null)
                 var _answerIndex = 0;
             if(_questionIndex == null)
                 var _questionIndex = 0;
             $(document).on('click', '.add-answer', function(){
+                alert('hi');
                 _answerIndex = _answerIndex + 1;
                 console.log(_answerIndex);
                 $(this).closest('.answers').find('ol').append("<li class='ui-state-default test2'><div class='boxed-answer'><label class='answer'><input type='radio' name='correctAnswer'></span></label><input type='text' class='answer' name='answer"+_answerIndex+"' value=''> <button class='btn btn-danger btn-xs added-answer'>X</button></div></li>");
@@ -72,9 +73,72 @@
     
 
 
-    <ol id="sortable2" class="ol-questions" toleranceElement=" > ol"> <!-- QUESTIONS SORT -->        
-
-	
+    <ol id="sortable2" class="ol-questions" toleranceElement=" > ol"> <!-- QUESTIONS SORT -->       
+    <% @currentTest.questions.each do |question| %> 
+        <li class='ui-state-default'>
+            <div class='row'>
+                <div class='col-xs-12 questions-div'>
+                    <div class='row'>
+                        <div class='col-xs-12'>
+                            <div class='question'>
+                                <textarea><%= question.question %></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='row'>
+                        <div class='col-xs-6'>
+                            <div class='answers'>
+                                <h4>Click the circle to identify correct answer.</h4>
+                                <div id='sortable' class='answerbank'>
+                                    <ol id='ol-questions-id'>
+                                        <% question.answers.each do |answer| %>
+                                            <li class='ui-state-default test2'>
+                                                <div class='boxed-answer'>
+                                                    <label class='answer'>
+                                                        <% if (answer.correct == true) %>
+                                                            <input type='radio' name='correctAnswer' checked>
+                                                        <% else %>
+                                                            <input type='radio' name='correctAnswer'>
+                                                        <% end %>
+                                                    </label>
+                                                    <input type='text' class='answer' name='answer<%= answer.id %>' value='<%= answer.answer %>'>
+                                                    <button class='btn btn-danger btn-xs added-answer'>X</button>
+                                                </div>
+                                            </li>
+                                        <% end %>
+                                    </ol>
+                                </div>
+                                <button class='boxed-answer add-answer'>Add an answer</button>
+                            </div>
+                        </div>
+                        <div class='col-xs-6'>
+                            <div class='row'>
+                                <div class='options'>
+                                    <div class='row padding15'>
+                                        <h4>Set the test options.</h4>
+                                        <div class='top'>
+                                            <div class='col-xs-6 padded'>
+                                                <label>Enter Time Limit:</label><br>
+                                            </div>
+                                            <div class='col-xs-6 padded'>
+                                                <input type='stopwatch' class='timelimit' value="<%= question.timelimit %>" placeholder='00:00'>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='row padding15'>
+                                        <div class='bottom padded'>
+                                            <button class='btn btn-danger delete_btn'>DELETE QUESTION</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+	<% end %>
       
     </ol> <!-- END QUESTIONS SORT -->
 
