@@ -1,47 +1,36 @@
-<h1>Admintests#index - DASHBOARD</h1>
-<p>Find me in app/views/admintests/index.html.erb</p>
-
-<div class="container">
-
-	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
-		<div class="col-xs-12 formatted-div">                    
-            <div class="row">     
-                <div class="col-xs-6"> 
-                   <div class="site-logo">
-                        <h1>Testing Platform - Admin</h1>
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                    <nav class="navigation">
-                        <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-index.html" class="btn btn-default">Home</a>
-                        <a href="/Users/kratos/Desktop/TestingPlatform/admin-results.html" class="btn btn-default">Results</a>
-                        <a href="/Users/kratos/Desktop/TestingPlatform/landingpage.html" class="btn btn-default">Logout</a>
-                    </nav>		
-                </div>
-            </div>
-		</div>
-	</div> <!-- END SECTION: NAVIGATION ROW -->
+<style type="text/css">
+.inline{
+    display: inline-block;
+}
+.navigation{
+    vertical-align: top;
+    padding-top: 10px;
+}
+</style>
 
 	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
 		<div class="col-xs-12 formatted-div">
             <div class="row">
-                <div class="col-xs-4">
-                    <div>
-                        <h3>Generate New Test:</h3>
-                    </div>    
-                </div>
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label for="">Test Name:</label>
-                       <input class="form-control" type="text">
+                <form method='post' action='/admintests/new'>
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <div class="col-xs-4">
+                        <div>
+                            <h3>Generate New Test:</h3>
+                        </div>    
                     </div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="form-group">
-                        <label for=""></label>
-                    <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-new.html" class="btn btn-success form-control">Create a Test</a>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label for="">Test Name:</label>
+                           <input class="form-control" name="test_name"type="text">
+                        </div>
                     </div>
-                </div>
+                    <div class="col-xs-4">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <input type='submit' value='Create New Test' class="btn btn-success wide100">
+                        </div>
+                    </div>
+                </form>
             </div>
 		</div>
 	</div> <!-- END SETION: TEST DETAILS ROW -->
@@ -54,30 +43,26 @@
                         <thead>
                             <tr>
                                 <td>Name</td>
-                                <td>Timed</td>
+                                <td># of Questions</td>
                                 <td>Actions</td>
                             </tr>
                         </thead>
-                        <tr>
-                            <td>CodingChallenge 202</td>
-                            <td>Yes</td>
-                            <td>
-                                <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-new.html" class="btn btn-warning">Edit</a>  
-                                 <a href="#" class="btn btn-danger destroy_test">Destroy</a>
-                            </td>
-                        </tr>
-                        <tr id="test2">
-                            <td>CodingChallenge 202</td>
-                            <td>Yes</td>
-                            <td>
-                                <a href="/Users/kratos/Desktop/TestingPlatform/admin-test-new.html" class="btn btn-warning">Edit</a>  
-                                 <a href="#" class="btn btn-danger destroy_test">Destroy</a>
-                            </td>
-                        </tr>
+                        <% @tests.each do |test| %>
+                            <tr>
+                                <td>
+                                    <%= test.name %>
+                                </td>
+                                <td>
+                                    <%= test.questions.count %>
+                                </td>
+                                <td>
+                                    <a href="#/<%= test.id %>" class="btn btn-warning ">Edit</a>
+                                    <a href="#/<%= test.id %>" class="btn btn-danger ">Destroy</a>
+                                </td>
+                            </tr>
+                        <% end %>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
-</div>

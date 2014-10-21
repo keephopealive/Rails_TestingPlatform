@@ -1,5 +1,3 @@
-<h1>Tests#new</h1>
-<p>Find me in app/views/tests/new.html.erb</p>
 
 <script type="text/javascript">
     $(function() {
@@ -37,7 +35,9 @@
             myid = 1;
             $('.questions').not('#question_no'+ myid).hide();
             $('#question_no' + myid).show();
-            $("#start").hide();
+            $("#start").parent().hide();
+            // $("#start").hide();
+
         });
         
         // Click Next Question 
@@ -72,52 +72,40 @@
     });    
 </script>
 
+<head>
 	<title>User - Test</title>
 </head>
-<body>
-
-<div class="container">
 
 	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
 		<div class="col-xs-12 formatted-div">        
             <div class="row">     
-                <div class="col-xs-6 site-logo"> 
-                    <h1>Testing Platform</h1>
+                <div class="col-xs-4 padding5"> 
+                    <h3>User</h3>
+                    <h4><%= session[:first_name] %> <%= session[:last_name] %></h4>
                 </div>
-                <div class="col-xs-6">
-                    <br>
-                    <a href="#" id="start"class="btn btn-success btn-lg padding5">Begin Test!</a>                  
-                     <!-- <a href="" id="" class="btn btn-danger padding5">Exit</a> --> <!-- ADD A RELOAD BUTTON -->
+                <div class="col-xs-4 padding5">
+                    <h3>Test</h3>
+                    <h4><%= session[:test_name] %></h4>
+                    
                 </div>
-            </div>			
-		</div>
-	</div> <!-- END SECTION: NAVIGATION ROW -->
-
-	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
-		<div class="col-xs-12 formatted-div">
-            <div class="row">
-                <div class="col-xs-6 padding5">
-                    <div class="col-xs-4">
-                        <label>Test Name:</label><br>
-                        <label>Test ID:</label>
-                    </div>
-                    <div class="col-xs-8 font-black">
-                        <label><%= @test.name %></label><br>
-                        <label><%= @test.id %></label><br>
-                    </div>
-                </div>
-                <div class="col-xs-6 padding5">
-                    <div class="col-xs-4 ">
-                        <label>Name:</label><br>
-                        <label># of Questions:</label><br>
-                    </div>
-                    <div class="col-xs-8 font-black">
-                        <label><%= session[:first_name] %></label><label><%= session[:last_name] %></label><br>
-                        <label><%= session[:testSize] %></label>
-                    </div>
+                <div class="col-xs-4 padding5">
+                    <h3>Total Questions</h3>
+                    <h4><%= session[:testSize] %></h4>
                 </div>
             </div>
-		</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 formatted-div">
+            <h3>Description</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure 
+            </p>
+            <a href="#" id="start"class="btn btn-success btn-lg padding5 wide40">Begin Test!</a>
+        </div>
 	</div> <!-- END SETION: TEST DETAILS ROW -->
 
 
@@ -183,7 +171,3 @@
             </div>
         </div>
     </div>
-    <script>
-        
-    </script>
-</div>

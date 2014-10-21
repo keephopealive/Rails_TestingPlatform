@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
   root to: 'tests#index'
+  get '/admintests' => 'admintests#index'
+  post '/admintests/new' => 'admintests#new'
   resource :tests, :users, :sessions, :admintests
   post '/results' => 'tests#results'
+  get '/logout' => 'sessions#destroy'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
-    include SessionsHelper
-
+  include SessionsHelper
+  
   # L O G I N 
 
   def new
@@ -10,21 +10,22 @@ class SessionsController < ApplicationController
   def create
     user = User.authenticate(params[:email], params[:password])
     if user.nil?
-      flash.now[:error] = "Invalid email/password combination."
+      session[:error] = "Invalid Credentials."
       redirect_to '/'
     else
-      sign_in user
+      session[:user_id] = user.id
+      redirect_to '/admintests'
     end
   end
 
   def show
-    deny_access if (session[:user_id] == nil)
-    @user = User.find(session[:user_id])
-    @nonfriends = User.all-@user.friends
+
   end
 
   def destroy
-    sign_out_redirect
+    session[:user_id] = nil
+    current_user = nil
+    redirect_to '/'
   end
 
 end

@@ -23,6 +23,10 @@ div.container {
   margin: 0 auto;
 }
 
+nav{
+  padding-top: 20px;
+}
+
 /* GLOBAL CLASSES */
 div.formatted-div {
       margin: 5px auto;

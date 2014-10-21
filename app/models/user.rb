@@ -1,9 +1,4 @@
 class User < ActiveRecord::Base
-	has_many :friendships
-	has_many :friends, through: :friendships
-	has_many :messages
-	has_many :comments
-
 	validates :first_name, 		:presence 	=> true,
 			  :length 						=> { :within => 2..50 }
 	

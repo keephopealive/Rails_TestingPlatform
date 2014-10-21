@@ -1,23 +1,12 @@
-<h1>Tests#index LANDING PAGE </h1>
-<p>Find me in app/views/tests/index.html.erb</p>
-
-<div class="container">
-
-	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
-		<div class="col-xs-12 formatted-div">        
-            <div class="row">     
-                <div class="col-xs-6"> 
-                   <div class="site-logo">
-                        <h1>Testing Platform</h1>
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                    <nav class="navigation padding15">
-                    </nav>		
-                </div>
-            </div>
-		</div>
-	</div> <!-- END SECTION: NAVIGATION ROW -->
+<style type="text/css">
+.success_msg{
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+    font-size: 1.2em;
+    border-radius: 5px;
+}
+</style>
 
 	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
 		<div class="col-xs-12 formatted-div">
@@ -68,7 +57,9 @@
                     <form action="sessions" method="post">
                         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
                         <h3>Create a Test:</h3>
-                        <%= flash[:error]%>
+                        <h5 class="success_msg"></h5>
+                        <%= session[:error] %>
+                        <% session[:error] = nil %>
                         <div class="row">
                             <div class="col-xs-6">
                                 <div class="padding5">
@@ -90,7 +81,6 @@
                         <input type='submit' class="btn btn-success take_create_test_btn wide80" value="Login">
                     </form>
                     <!-- Button trigger modal -->
-                    <%= flash[:error] %>
                     <%= link_to 'Registration', "#myModal", data: {toggle: "modal", target: "#myModal"}, class: "btn btn-primary wide80 padding5" %>
                 </div>
             </div>
@@ -101,50 +91,70 @@
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-    <form method="post" action="/users" id="registration_form">
-        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Testing Platform - Registration</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2 form-group">
-                    <%= flash[:error] %>
-                    <label>First Name</label>
-                    <input type="text" name="first_name" class="form-control">
-                    <label>Last Name</label>
-                    <input type="text" name="last_name"class="form-control">
-                    <label>Email</label>
-                    <input type="text" name="email"class="form-control">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control">
-                    <label>Confirm Password</label>
-                    <input type="password" name="confirm_password" class="form-control">
+    <div class="modal-dialog">
+        <div class="modal-content">
+<!-- - - - - - - - - - - = = = = = REGISTRATION FORM = = = = = - - - - - - - - - - -->
+            <form method="post" action="/users" id="registration_form">
+                <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Testing Platform - Registration</h4>
                 </div>
-                <div class="col-xs-6">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 form-group">
+                            <p class='errors'></p>
+                            <label>First Name</label>
+                            <input type="text" name="first_name" value="<%= flash[:first_name]; %>" class="form-control">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name" value="<%= flash[:last_name]; %>" class="form-control">
+                            <label>Email</label>
+                            <input type="text" name="email" value="<%= flash[:email]; %>" class="form-control">
+                            <label>Password</label>
+                            <input type="password" name="password" class="form-control">
+                            <label>Confirm Password</label>
+                            <input type="password" name="confirm_password" class="form-control">
+                        </div>
+                    </div>
                 </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <input type="submit" value="Register" class="btn btn-primary">
-          </div>
-      </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        Close
+                    </button>
+                    <input type="submit" value="Register" class="btn btn-primary">
+                </div>
+            </form>
+<!-- - - - - - - - - - - = = = = = END REGISTRATION FORM END = = = = = - - - - - - - - - - -->
+        </div>
     </div>
-  </div>
 </div>
-
 <script type="text/javascript">
     $('#registrationModal').click(function(){
         $('#myModal').modal('toggle');
     });
 
     $("#registration_form").on('submit', function(){
-        
-    })
+        $.post(
+            $(this).attr('action'),
+            $(this).serialize(),
+            function(return_data){
+                if(return_data.status == 'success')
+                {
+                    $('.success_msg').html('Successful Registration, please login.');
+                    $('#myModal').modal('toggle');       
+                }
+                else
+                {
+                    $('.errors').html(return_data.message);
+                }
+            },
+            'json'
+        );
+        return false;
+    });
+
+
     
 </script>
-</div>

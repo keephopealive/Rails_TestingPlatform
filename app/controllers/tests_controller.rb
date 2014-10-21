@@ -1,5 +1,6 @@
 class TestsController < ApplicationController
   require 'builder'
+  layout "student"
 
   def index # Landing Page
   	# Take Test Form Redirect to Create
