@@ -4,8 +4,7 @@ class TestsController < ApplicationController
 
   def index # Landing Page
   	# Take Test Form Redirect to Create
-    reset_session
-  	@alltests = Test.all
+  	@alltests = Test.all 
   end
 
 

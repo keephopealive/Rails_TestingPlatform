@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get '/admintests' => 'admintests#index'
   post '/admintests/new' => 'admintests#new'
   get '/admintests/edit/:id' => 'admintests#edit'
-  resource :tests, :users, :sessions, :admintests
+  resources :tests, :users, :sessions, :admintests
   post '/results' => 'tests#results'
   get '/logout' => 'sessions#destroy'
 

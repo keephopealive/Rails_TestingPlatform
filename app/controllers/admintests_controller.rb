@@ -18,7 +18,8 @@ class AdmintestsController < ApplicationController
 		@newTest = Test.new 
 		@newTest.name = session[:test_name] = params[:test_name] 
 		@newTest.save
-		session[:test_id] = @newTest.id
+		params[:test_id] = @newTest.id
+		redirect_to 'admintests/edit/:id'
 	end
 
 	def show
@@ -33,6 +34,11 @@ class AdmintestsController < ApplicationController
 	def edit
 		session[:test_id] = params[:id]
 		@currentTest = Test.find(params[:id])
+	end
+
+	def destroy 
+		test = Test.find(params[:id]).destroy
+		redirect_to admintests_path
 	end
 
 end

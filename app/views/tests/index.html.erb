@@ -57,8 +57,7 @@
                     <form action="sessions" method="post">
                         <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
                         <h3>Create a Test:</h3>
-                        <h5 class="success_msg"></h5>
-                        <%= session[:error] %>
+                        <h5 class="success_msg"><%= session[:error]; %></h5>
                         <% session[:error] = nil %>
                         <div class="row">
                             <div class="col-xs-6">

@@ -57,7 +57,7 @@
                                 </td>
                                 <td>
                                     <a href="/admintests/edit/<%= test.id %>" class="btn btn-warning ">Edit</a>
-                                    <a href="#/<%= test.id %>" class="btn btn-danger ">Destroy</a>
+                                    <%= link_to "delete", admintest_path(test), :method => :delete, :class =>'btn btn-danger'%>
                                 </td>
                             </tr>
                         <% end %>
@@ -66,3 +66,15 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+
+        $('.destroy').on('click', function(){
+            var destroyConfirmation = confirm('Are you sure you want to destroy this test?');
+            if (destroyConfirmation == false)
+            {
+                return false;
+            }
+            
+        });
+    </script>
