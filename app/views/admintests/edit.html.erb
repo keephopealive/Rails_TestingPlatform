@@ -29,13 +29,54 @@
             $('.container').append("");
         });
         $(document).on('click', '.delete_btn', function(){
+            $.post(
+                '/admintests/deleteQuestion',
+                {
+                    postType: 'deleteQuestion',
+                    question_no: '<%= question.id %>' // CHANGE HERE
+                    // Put Question ID here, use the form with
+                    // (this).serialize to push question ID 
+                },
+                function(return_data){
+
+                },
+                'json'
+            );
             $(this).closest('li.ui-state-default').remove();
+            return false;
         });
         
         $(document).on('click', '#addQuestion', function(){
-            $('#sortable2').append("<li class='ui-state-default'><div class='row'> <div class='col-xs-12 questions-div '><div class='row'><div class='col-xs-12'><div class='question'><textarea></textarea></div></div></div><div class='row'><div class='col-xs-6'><div class='answers'> <h4>Click the circle to identify correct answer.</h4><div id='sortable' class='answerbank'><ol id='ol-questions-id'></ol></div><button class='boxed-answer add-answer'>Add an answer</button></div></div><div class='col-xs-6'><div class='row'><div class='options'><div class='row padding15'><h4>Set the test options.</h4><div class='top'><div class='col-xs-6 padded'><label>Enter Time Limit:</label><br></div><div class='col-xs-6 padded'><input type='stopwatch' class='timelimit' placeholder='00:00'> <br></div></div></div><div class='row padding15'><div class='bottom padded'><button class='btn btn-danger delete_btn'>DELETE QUESTION</button></div></div></div></div></div></div></div></div></li>");            
+            $.post(
+                '/admintests/addQuestion',
+                {
+                    postType: 'addQuestion',
+                    testNo: '<%= @currentTest.id %>'
+                },
+                function(return_data){
+
+                },
+                'json'
+             );
+
+            $('#sortable2').append("<li class='ui-state-default'><div class='row'> <div class='col-xs-12 questions-div '><div class='row'><div class='col-xs-12'><div class='question'><textarea></textarea></div></div></div><div class='row'><div class='col-xs-6'><div class='answers'> <h4>Click the circle to identify correct answer.</h4><div id='sortable' class='answerbank'><ol id='ol-questions-id'></ol></div><button class='boxed-answer add-answer'>Add an answer</button></div></div><div class='col-xs-6'><div class='row'><div class='options'><div class='row padding15'><h4>Set the test options.</h4><div class='top'><div class='col-xs-6 padded'><label>Enter Time Limit:</label><br></div><div class='col-xs-6 padded'><input type='stopwatch' class='timelimit' placeholder='00:00'> <br></div></div></div><div class='row padding15'><div class='bottom padded'><button class='btn btn-danger delete_btn'>DELETE QUESTION</button></div></div></div></div></div></div></div></div></li>");  
             return false;
         });
+
+        $(document).on('submit', ".deleteQuestion", function(){
+            alert('hi');
+            // $.post(
+            //     $(this).attr('action'),
+            //     $(this).serialize(),
+            //     function(return_data){
+
+            //     },
+            //     'json'
+            // );
+        });
+
+
+
 	</script>
 <head>
     <title>Admin Create/Edit Test</title>
@@ -90,23 +131,23 @@
                             <div class='answers'>
                                 <h4>Click the circle to identify correct answer.</h4>
                                 <div id='sortable' class='answerbank'>
-                                    <ol id='ol-questions-id'>
-                                        <% question.answers.each do |answer| %>
-                                            <li class='ui-state-default test2'>
-                                                <div class='boxed-answer'>
-                                                    <label class='answer'>
-                                                        <% if (answer.correct == true) %>
-                                                            <input type='radio' name='correctAnswer' checked>
-                                                        <% else %>
-                                                            <input type='radio' name='correctAnswer'>
-                                                        <% end %>
-                                                    </label>
-                                                    <input type='text' class='answer' name='answer<%= answer.id %>' value='<%= answer.answer %>'>
-                                                    <button class='btn btn-danger btn-xs added-answer'>X</button>
-                                                </div>
-                                            </li>
-                                        <% end %>
-                                    </ol>
+<ol id='ol-questions-id'>
+    <% question.answers.each do |answer| %>
+        <li class='ui-state-default test2'>
+            <div class='boxed-answer'>
+                <label class='answer'>
+                    <% if (answer.correct == true) %>
+                        <input type='radio' name='correctAnswer' checked>
+                    <% else %>
+                        <input type='radio' name='correctAnswer'>
+                    <% end %>
+                </label>
+                <input type='text' class='answer' name='answer<%= answer.id %>' value='<%= answer.answer %>'>
+                <button class='btn btn-danger btn-xs added-answer'>X</button>
+            </div>
+        </li>
+    <% end %>
+</ol>
                                 </div>
                                 <button class='boxed-answer add-answer'>Add an answer</button>
                             </div>
@@ -128,7 +169,12 @@
                                     </div>
                                     <div class='row padding15'>
                                         <div class='bottom padded'>
-                                            <button class='btn btn-danger delete_btn'>DELETE QUESTION</button>
+
+<form class='deleteQuestion' method='post' action='/deleteQuestion'>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type='hidden' name='question_no' value='<%= question.id %>'>
+    <input type='submit' value="DELETE QUESTION" class='btn btn-danger delete_btn'>
+</form>
                                         </div>
                                     </div>
                                 </div>
@@ -145,7 +191,7 @@
     <div class="row">
         <div class="col-xs-offset-2 col-xs-8">
            <div class="formatted-div">
-                <a href="" class="btn btn-success wide40" id="addQuestion">Add New Question</a>
+                <button class="btn btn-success wide40" id="addQuestion">Add New Question</button>
                 <input type='submit' value='SAVE' class="btn btn-primary wide40">
            </div>
         </div>

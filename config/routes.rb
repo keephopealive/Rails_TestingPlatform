@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   root to: 'tests#index'
+  post '/admintests/addQuestion' => 'admintests#addQuestion'
+  post '/admintests/deleteQuestion' => 'admintests#deleteQuestion'
+  post '/deleteQuestion' => 'admintests#deleteQuestion'
   get '/admintests' => 'admintests#index'
   post '/admintests/new' => 'admintests#new'
   get '/admintests/edit/:id' => 'admintests#edit'
