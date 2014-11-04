@@ -30,13 +30,18 @@ class AdmintestsController < ApplicationController
 
 	end
 
+	# Questions
+
 	def addQuestion
 		puts "- - PARAMS - - "
 	    puts YAML::dump(params)
 	    puts "- - END OF PARAMS - - "
-	    puts params[:testNo]
-	    puts Test.find(params[:testNo]).questions.create
-      	render json: { status: 'success'}
+	    question = Test.find(session[:test_id]).questions.create
+      	render json: { 	
+      		status: 'success', 
+      		test_id: session[:test_id],
+      		question_id: question.id,
+      	}
       	
 	end
 
@@ -45,7 +50,28 @@ class AdmintestsController < ApplicationController
 	    puts YAML::dump(params)
 	    puts "- - END OF PARAMS - - "
 		Question.find(params[:question_no]).destroy
-		render json: { status: 'success'}
+		render json: { status: true}
+	end
+
+	# Answers
+
+	def addAnswer
+		puts "- - PARAMS - - "
+	    puts YAML::dump(params)
+	    puts "- - END OF PARAMS - - "
+		puts params[:question_id]
+		answer = Test.find(session[:test_id]).answers.create(:question_id => params[:question_id])
+		render json: {
+			status: 'success',
+			test_id: session[:test_id],
+			question_id: params[:question_id],
+			answer_id: answer.id
+		}
+
+	end
+
+	def deleteAnswer
+		
 	end
 
 

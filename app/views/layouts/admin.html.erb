@@ -2,29 +2,29 @@
 <html>
 <head>
   <title>TestingPlatform</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>	
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application' %>	
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 <div class="container">
 	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
 		<div class="col-xs-12 formatted-div">        
-            <div class="row">     
-                <div class="col-xs-6"> 
-                   <div class="site-logo">
-                        <h1>Testing Platform - Admin</h1>
-                        <h3>Welcome <%= session[:first_name] %></h3>
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                    <nav class="navigation">
-                        <a href="/admintests" class="btn btn-default">Dashboard</a>
-                        <a href="/admintests/show" class="btn btn-default">Results</a>
-                        <a href="/logout" class="btn btn-default">Logout</a>
-                    </nav>		
-                </div>
-            </div>
+      <div class="row">     
+          <div class="col-xs-6"> 
+             <div class="site-logo">
+                  <h1>Testing Platform - Admin</h1>
+                  <h3>Welcome <%= session[:first_name] %></h3>
+              </div>
+          </div>
+          <div class="col-xs-6">
+              <nav class="navigation">
+                  <a href="/admintests" class="btn btn-default">Dashboard</a>
+                  <a href="/admintests/show" class="btn btn-default">Results</a>
+                  <a href="/logout" class="btn btn-default">Logout</a>
+              </nav>		
+          </div>
+      </div>
 		</div>
 	</div> <!-- END SECTION: NAVIGATION ROW -->
 
