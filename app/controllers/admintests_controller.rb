@@ -49,7 +49,9 @@ class AdmintestsController < ApplicationController
 		puts "- - PARAMS - - "
 	    puts YAML::dump(params)
 	    puts "- - END OF PARAMS - - "
-		Question.find(params[:question_no]).destroy
+		Question.find(params[:question_id]).destroy
+		puts params[:question_id]
+		Answer.where(:question_id => params[:question_id]).destroy_all
 		render json: { status: true}
 	end
 
@@ -71,7 +73,25 @@ class AdmintestsController < ApplicationController
 	end
 
 	def deleteAnswer
-		
+		puts "- - PARAMS - - "
+	    puts YAML::dump(params)
+	    puts "- - END OF PARAMS - - "
+	    Answer.find(params[:answer_id]).destroy
+		render json: {
+			status: 'success',
+			test_id: session[:test_id],
+			question_id: params[:question_id],
+		}
+	end
+
+	def saveQuestion
+		puts "- - PARAMS - - "
+	    puts YAML::dump(params)
+	    puts "- - END OF PARAMS - - "
+	    Question.find(params[:question_id]).update(:question=>params[:question])
+		render json: {
+			status: 'success'
+		}		
 	end
 
 

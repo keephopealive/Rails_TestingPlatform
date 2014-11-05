@@ -1,4 +1,9 @@
-	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
+	<style type="text/css">
+    form.delete-answer{
+        display: inline-block;
+    }
+    </style>
+    <div class="row"> <!-- SETION: TEST DETAILS ROW -->
 	    <div class="col-xs-12 formatted-div">
             <div class="row">
                 <h3>Update Test Information:</h3>
@@ -30,7 +35,7 @@
     
 
 
-    <ol id="sortable2" class="ol-questions" toleranceElement=" > ol"> <!-- QUESTIONS SORT -->       
+    <ol class="sortable2" class="ol-questions" toleranceElement=" > ol"> <!-- QUESTIONS SORT -->       
     <% @currentTest.questions.each do |question| %> 
         <li class='ui-state-default'>
             <div class='row'>
@@ -38,7 +43,13 @@
                     <div class='row'>
                         <div class='col-xs-12'>
                             <div class='question'>
-                                <textarea name='question'><%= question.question %></textarea>
+<!-- SAVE QUESTION -->
+<form method='post' action='/saveQuestion' class='questions'>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
+    <input type='hidden' name='question_id' value='<%= question.id %>'>
+    <textarea name='question'><%= question.question %></textarea>
+</form>
                             </div>
                         </div>
                     </div>
@@ -46,32 +57,40 @@
                         <div class='col-xs-6'>
 <div class='answers'>
     <h4>Click the circle to identify correct answer.</h4>
-<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
 <div class='answerbank'>
-    <ol id='ol-questions-id'>
+    <ol class='ol-questions-id'>
         <% question.answers.each do |answer| %>
             <li class='ui-state-default test2'>
                 <div class='boxed-answer'>
                     <label class='answer'>
-                        <% if (answer.correct == true) %>
-                            <input type='radio' name='correctAnswer' checked>
-                        <% else %>
-                            <input type='radio' name='correctAnswer'>
-                        <% end %>
-                    </label>
-
-                    <input type='text' class='answer' name='answer<%= answer.id %>' value='<%= answer.answer %>'>
-                    <button class='btn btn-danger btn-xs added-answer'>X</button>
+<!-- UPDATE ANSWER CONTENT -->                        
+<form class="answer">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
+    <input type='hidden' name='question_id' value='<%= question.id %>'>
+    <input type='hidden' name='answer_id' value='<%= answer.id %>'>
+    <input type='radio' name='correctAnswer'></span></label>
+    <input type='text' class='answer' name='answer<%= answer.id %>' value='<%= answer.answer %>'>
+</form>
+<!-- DELETE ANSWER -->
+<form class="delete-answer">
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
+    <input type='hidden' name='question_id' value='<%= question.id %>'>
+    <input type='hidden' name='answer_id' value='<%= answer.id %>'>
+    <input type='submit' value='X' class='btn btn-danger btn-xs added-answer'>
+</form>
                 </div>
             </li>
         <% end %>
     </ol>
-</div>
+
 <form class='add-answer'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
     <input type='submit' class='boxed-answer add-answer' value="Add an Answer">
 </form>
-<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->                            </div>
+</div>
+</div>
                         </div>
                         <div class='col-xs-6'>
                             <div class='row'>
@@ -93,7 +112,7 @@
 <!-- DELETE QUESTION -->
 <form class='deleteQuestion' method='post' action='/deleteQuestion'>
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-    <input type='hidden' name='question_no' value='<%= question.id %>'>
+    <input type='hidden' name='question_id' value='<%= question.id %>'>
     <input type='submit' value="DELETE QUESTION" class='btn btn-danger deleteQuestion_btn'>
 </form>
                                         </div>
@@ -114,57 +133,74 @@
            <div class="formatted-div">
                 <!-- ADD QUESTION -->
                 <button class="btn btn-success wide40" id="addQuestion">Add New Question</button>
-                <input type='submit' value='SAVE' class="btn btn-primary wide40">
+                <button class="btn btn-primary wide40" id="saveQuestions">SAVE</button>
            </div>
         </div>
     </div>
 
 <script type="text/javascript">
-    $(function() {
-        if(_answerIndex == null)
-            var _answerIndex = 0;
-        if(_questionIndex == null)
-            var _questionIndex = 0;
+
+// UPDATE ANSWER CONTENT
+// UPDATE QUESTION CONTENT
+    $(document).on('click', '#saveQuestions', function(){
+        $('form.questions').each(function(){
+            console.log(this);
+            $.post(
+                '/saveQuestion',
+                $(this).serialize(),
+                function(data){
+                    console.log(data);
+                },
+                'json'
+            );         
+        });
+        $('form.answers')
+        return false;
     });
 
-// ADD ANSWER @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+// ADD ANSWER 
     $(document).on('submit', 'form.add-answer', function(){
+        var that = $(this);
         $.post(
             '/addAnswer',
             $(this).serialize(),
             function(data){
                 console.log(data);
-                _answerIndex = _answerIndex + 1;
-                console.log(_answerIndex);
-                $(this).closest('.answers').find('ol').append(
+                console.log(data.test_id);
+                console.log(data.question_id);
+                console.log(data.answer_id);
+                console.log($(this));
+                $(that).parent().children('ol').append(
                 "<li class='ui-state-default test2'>"+
-                    "<div class='boxed-answer'>"+
-                        "<label class='answer'>"+
-                        "<input type='radio' name='correctAnswer'></span></label>"+
-                        "<input type='text' class='answer' name='answer"+_answerIndex+"' value=''>"+
-                        "<button class='btn btn-danger btn-xs added-answer'>X</button>"+
-                    "</div>"+
+                    "<form>"+
+                        "<div class='boxed-answer'>"+
+                            "<label class='answer'>"+
+                            "<input type='radio' name='correctAnswer'></span></label>"+
+                            "<input type='text' class='answer' name='answer" + data.answer_id + "' value=''>"+
+                            "<button class='btn btn-danger btn-xs added-answer'>X</button>"+
+                        "</div>"+
+                    "</form>"+
                 "</li>");
+            },
+            'json'
+        );        
+        return false;
+    });
 
+// DELETE ANSWER 
+    $(document).on('submit', 'form.delete-answer', function(){
+        var that = $(this);
+        $.post(
+            '/deleteAnswer',
+            $(this).serialize(),
+            function(data){
+                console.log(data);
+                $(that).parent().parent().remove();
             },
             'json'
         );
-        
-        
         return false;
     });
-//  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-    // // ADD ANSWER
-    // $(document).on('click', '.added-answer', function(){
-    //     $(this).parent().parent().remove();
-    // });
-
-    // $(document).on('dblclick', 'li.answer', function(){
-    //     $(this).parent().toggleClass('right-answer');
-    //     // $(this).parent().prop('correct', true);
-    // });
-
 
 // DELETE QUESTION
     $(document).on('submit', 'form.deleteQuestion', function(){
@@ -188,14 +224,19 @@
             function(data){
                 console.log('Test ID: ', data.test_id);
                 console.log('Question ID: ', data.question_id);
-                $('#sortable2').append(
+                $('.sortable2').append(
                 "<li class='ui-state-default'>"+
                     "<div class='row'>"+
                         "<div class='col-xs-12 questions-div'>"+
                             "<div class='row'>"+
                                 "<div class='col-xs-12'>"+
                                     "<div class='question'>"+
-                                        "<textarea></textarea>"+
+"<form method='post' action='/saveQuestion' class='questions'>"+
+    "<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>"+
+    "<input type='hidden' name='test_id' value='"+data.test_id+"'>"+
+    "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
+    "<textarea name='question'></textarea>"+
+"</form>"+
                                     "</div>"+
                                 "</div>"+
                             "</div>"+
@@ -203,10 +244,14 @@
                                 "<div class='col-xs-6'>"+
                                     "<div class='answers'>"+
                                         "<h4>Click the circle to identify correct answer.</h4>"+
-                                        "<div id='sortable' class='answerbank'>"+
-                                            "<ol id='ol-questions-id'></ol>"+
-                                        "</div>"+
-                                        "<button class='boxed-answer add-answer'>Add an answer</button>"+
+                                        "<div class='answerbank'>"+
+                                            "<ol class='ol-questions-id'></ol>"+
+                                       
+"<form class='add-answer'>"+
+    "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
+    "<input type='submit' class='boxed-answer add-answer' value='Add an Answer'>"+
+"</form>"+
+ "</div>"+
                                     "</div>"+
                                 "</div>"+
                                 "<div class='col-xs-6'>"+
@@ -229,7 +274,7 @@
                                                 "<div class='bottom padded'>"+
 "<form class='deleteQuestion' method='post' action='/deleteQuestion'>"+
     "<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>"+
-    "<input type='hidden' name='question_no' value='"+data.question_id+"'>"+
+    "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
     "<input type='submit' value='DELETE QUESTION' class='btn btn-danger deleteQuestion_btn'>"+
 "</form>"+
                                                 "</div>"+
@@ -248,3 +293,5 @@
     });
 
 </script>
+
+

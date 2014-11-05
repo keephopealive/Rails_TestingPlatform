@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   post '/addQuestion' => 'admintests#addQuestion'
   post '/deleteQuestion' => 'admintests#deleteQuestion'
   post '/addAnswer' => 'admintests#addAnswer'
+  post '/deleteAnswer' => 'admintests#deleteAnswer'
+  post '/saveQuestion' => 'admintests#saveQuestion'
   get '/admintests' => 'admintests#index'
   post '/admintests/new' => 'admintests#new'
   get '/admintests/edit/:id' => 'admintests#edit'
