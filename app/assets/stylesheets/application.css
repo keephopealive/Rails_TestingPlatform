@@ -74,11 +74,30 @@ input{
 .wide50{
     width: 50%;
 }
+.wide60{
+  width: 60%;
+}
+.wide80{
+  width: 80%;
+}
 .highlight{
     background: rgb(100,255,100);
 }
 .questions-div{
   background-color: rgb(1,1,1);
+}
+.correct-answer{
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+
+}
+
+.add-answer{
+
+}
+.correct-choice{
+  display: inline-block;
 }
 
 /* HEADER RELATED */
@@ -114,13 +133,16 @@ input{
 
 
 /* ANSWERS */
+    form.answer {
+      display: inline-block;
+    }
     div.answers input {
       padding-left: 4px;
       font-size: .8em;
       font-weight: bold;
     }
     div.answers input.answer {
-      width: 305px; 
+        width: 320px;
     }
     .radio_btn{
         height: 18px;
@@ -128,30 +150,8 @@ input{
     }
     
 
-    #first-answer{
-      margin-right: 25px;
-    }
-    .answer_option{
-        width: 100px;
-        height: 100px;
-    }
-
-    .boxed-answer{ /* REMOVE TO CHANGE ANSWER EFFECT */
-      background-color: rgb(247,247,247);
-      color: rgb(55,55,55);
-      border: 1px solid black;
-      border-radius: 3px;
-      margin-top: 4px;
-    }
     .highlight{
         background-color: yellow;
-    }
-    div.answers{
-      padding: 5px;
-    }
-    button.add-answer{
-      margin-left: 40px;
-      width: 383px;
     }
     .content-description
     {
@@ -168,12 +168,6 @@ input{
 }
     label.answer{
       padding: 3px;
-    }
-    .answer{
-        text-align: left;
-    }
-    .answeroption{
-        padding-left: 30px;
     }
     .timelimit-ending{
         color: rgb(255,100,100);
@@ -205,9 +199,6 @@ input{
       list-style-type: none; 
       width: 100%; 
     }
-    .right-answer{
-      background-color: rgb(185,255,255);
-    }
 
 /* OPTIONS */
     div.options .top{
@@ -221,8 +212,6 @@ input{
     .padding15{
       padding: 15px;
     }
-
-
     .index-lis{
         text-align: left;
     }

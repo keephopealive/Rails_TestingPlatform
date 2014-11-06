@@ -112,9 +112,9 @@
 	<div class="row" id="question_div"> <!-- SECTION: QUESTION ANSWERS & OPTIONS ROW -->
         <form method="post" action="/results" id="testForm">
             <input type='hidden' name='0' value='<%= @test.id %>'>   
-<% @questions.each  do |question| %>
-            <!-- <input type='hidden' name="question_no" value="<%= question.id %>"> -->
-            <div id="question_no<%= question.id %>" class='col-xs-12 formatted-div questions'>
+<% @questions.each_with_index  do |question, index| %>
+            <input type='hidden' name="question_no" value="<%= question.id %>">
+            <div id="question_no<%= (index+1) %>" class='col-xs-12 formatted-div questions'>
                 <div class='row'>
                     <div class='col-xs-6'>
                         <h3>Question <%= question.id %> / <%= question.id.size %> </h3>

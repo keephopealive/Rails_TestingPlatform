@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   post '/addAnswer' => 'admintests#addAnswer'
   post '/deleteAnswer' => 'admintests#deleteAnswer'
   post '/saveQuestion' => 'admintests#saveQuestion'
+  post '/updateAnswer' => 'admintests#updateAnswer'
+  post '/updateAnswerTimeLimit' => 'admintests#updateAnswerTimeLimit'
   get '/admintests' => 'admintests#index'
   post '/admintests/new' => 'admintests#new'
   get '/admintests/edit/:id' => 'admintests#edit'

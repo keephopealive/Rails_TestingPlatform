@@ -90,8 +90,37 @@ class AdmintestsController < ApplicationController
 	    puts "- - END OF PARAMS - - "
 	    Question.find(params[:question_id]).update(:question=>params[:question])
 		render json: {
+			type: 'saveQuestion',
 			status: 'success'
 		}		
+	end
+
+	def updateAnswer
+		puts "- - PARAMS - - "
+	    puts YAML::dump(params)
+	    puts "- - END OF PARAMS - - "
+	    
+		if params[:correctAnswer]
+			answer = true
+		else
+			answer = false
+		end
+		Answer.find(params[:answer_id]).update(:answer=>params[:answer], :correct=>answer)
+		render json: {
+			type: 'updateAnswer',
+			status: 'success'
+		}	
+	end
+
+	def updateAnswerTimeLimit
+		puts "- - PARAMS - - "
+	    puts YAML::dump(params)
+	    puts "- - END OF PARAMS - - "
+		Question.find(params[:question_id]).update(:timelimit=>params[:timelimit])		
+		render json: {
+			type: 'updateAnswerTimeLimit',
+			status: 'success'
+		}
 	end
 
 

@@ -29,8 +29,8 @@ class TestsController < ApplicationController
     puts "- - END OF PARAMS - - "
 
     @myArray = Array.new
-    @myArray.push(1) # Push in Test ID
-    Test.first.answers.select(:id, :question_id).where(:correct=>true).each do |line| 
+    @myArray.push(session[:testID]) # Push in Test ID
+    Test.find(session[:testID]).answers.select(:id, :question_id).where(:correct=>true).each do |line| 
       @myArray.push(line.id) # Push in Answer # for each question inline.
     end
 

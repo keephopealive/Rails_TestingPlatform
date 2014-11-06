@@ -2,6 +2,9 @@
     form.delete-answer{
         display: inline-block;
     }
+    .added-answer{
+        display: inline-block;
+    }
     </style>
     <div class="row"> <!-- SETION: TEST DETAILS ROW -->
 	    <div class="col-xs-12 formatted-div">
@@ -60,17 +63,21 @@
 <div class='answerbank'>
     <ol class='ol-questions-id'>
         <% question.answers.each do |answer| %>
-            <li class='ui-state-default test2'>
-                <div class='boxed-answer'>
-                    <label class='answer'>
+             <li class='ui-state-default test2'>
+                <div class='boxed-answer padding5'>
 <!-- UPDATE ANSWER CONTENT -->                        
 <form class="answer">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
-    <input type='hidden' name='answer_id' value='<%= answer.id %>'>
-    <input type='radio' name='correctAnswer'></span></label>
-    <input type='text' class='answer' name='answer<%= answer.id %>' value='<%= answer.answer %>'>
+    <input type='hidden' name='answer_id' value='<%= answer.id %>'> 
+    <% if answer.correct %>
+        <input type='checkbox' name='correctAnswer' class='correct-answer' checked>
+    <% else %>
+        <input type='checkbox' name='correctAnswer' class='correct-answer'>
+    <% end %>
+
+    <input type='text' class='answer' name='answer' value='<%= answer.answer %>'>
 </form>
 <!-- DELETE ANSWER -->
 <form class="delete-answer">
@@ -78,8 +85,9 @@
     <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
     <input type='hidden' name='answer_id' value='<%= answer.id %>'>
-    <input type='submit' value='X' class='btn btn-danger btn-xs added-answer'>
+    <input type='submit' value='DELETE' class='btn btn-danger btn-xs added-answer'>
 </form>
+                    </label>
                 </div>
             </li>
         <% end %>
@@ -87,7 +95,7 @@
 
 <form class='add-answer'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
-    <input type='submit' class='boxed-answer add-answer' value="Add an Answer">
+    <input type='submit' class='btn btn-success wide40' value="Add an Answer">
 </form>
 </div>
 </div>
@@ -102,7 +110,11 @@
                                                 <label>Enter Time Limit:</label><br>
                                             </div>
                                             <div class='col-xs-6 padded'>
-                                                <input type='stopwatch' class='timelimit' value="<%= question.timelimit %>" placeholder='00:00'>
+<form class='timelimit'>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type='hidden' name='question_id' value='<%= question.id %>'>
+    <input type='number' name='timelimit' class='timelimit' value="<%= question.timelimit %>" placeholder='00:00'>
+</form>
                                                 <br>
                                             </div>
                                         </div>
@@ -154,7 +166,26 @@
                 'json'
             );         
         });
-        $('form.answers')
+        $('form.answer').each(function(){
+            $.post(
+                '/updateAnswer',
+                $(this).serialize(),
+                function(data){
+                    console.log(data);
+                },
+                'json'
+            );
+        });
+        $('form.timelimit').each(function(){
+            $.post(
+                '/updateAnswerTimeLimit',
+                $(this).serialize(),
+                function(data){
+                    console.log(data);
+                },
+                'json'
+            );
+        });
         return false;
     });
 
@@ -174,8 +205,7 @@
                 "<li class='ui-state-default test2'>"+
                     "<form>"+
                         "<div class='boxed-answer'>"+
-                            "<label class='answer'>"+
-                            "<input type='radio' name='correctAnswer'></span></label>"+
+                            "<input type='radio' name='correctAnswer'>"+
                             "<input type='text' class='answer' name='answer" + data.answer_id + "' value=''>"+
                             "<button class='btn btn-danger btn-xs added-answer'>X</button>"+
                         "</div>"+
