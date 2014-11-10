@@ -1,76 +1,6 @@
 
-<script type="text/javascript">
-    $(function() {
-        sessionStorage.setItem('timer', null)
-        var myid = 0;
-        $('.questions').not('#question_no'+ myid).hide();
-        $('#completed').hide();
-                
-        // Interval Event
-        var updateTimer = function(myTimeCheck) {
 
-            timer = sessionStorage.getItem('timer');
-            if ( timer == 999 )
-            {
-                timer = null;
-                $("span#timer").html('0');
-                $("").html('');
-            }
-            else if ( timer == 0 ) {
-                $('#nextquestion').trigger('click');
-            }
-            else {
-               timer = timer - 1;
-               sessionStorage.setItem('timer', timer);
-              $("span#timer").html(timer);
-            }
-        };
 
-        
-
-        // Click Start Test (First Question)
-        $("#start").click( function() {
-            var timelimit = <%= @questions.first.timelimit %>;
-            sessionStorage.setItem('timer', timelimit);
-            myid = 1;
-            $('.questions').not('#question_no'+ myid).hide();
-            $('#question_no' + myid).show();
-            $("#start").parent().hide();
-            // $("#start").hide();
-
-        });
-        
-        // Click Next Question 
-        $(document).on('click', '#nextquestion', function(){
-            myid ++;
-            if($('#question_no' + myid).length > 0) // if it exists...
-            {
-                var myTimeCheck = sessionStorage.setItem('timer', $('#timelimit_q'+ myid).html()); 
-                $('.questions').not('#question_no'+ myid).hide();
-                $('#question_no' + myid).show();
-            }
-            else // if questions run out and next question div does not exist...
-            {
-                $('#question_no' + (myid-1)).hide();
-                $('#completed').show();
-                $.post("/results", $('#testForm').serialize(), function(returned_data){
-                    $('#completed').html(returned_data);
-                });
-                clearInterval(myTimer);
-                return false;
-            } 
-        });
-
-        
-        // Warn user if RELOAD occurs - Test will be marked incomplete.
-        window.onbeforeunload = function() {
-            if(myid > 0)
-                return "Test progress will be lost/marked incomplete if you leave the page, are you sure?";
-        };
-
-        var myTimer = setInterval(updateTimer, 1000);
-    });    
-</script>
 
 <head>
 	<title>User - Test</title>
@@ -113,8 +43,7 @@
         <form method="post" action="/results" id="testForm">
             <input type='hidden' name='0' value='<%= @test.id %>'>   
 <% @questions.each_with_index  do |question, index| %>
-            <input type='hidden' name="question_no" value="<%= question.id %>">
-            <div id="question_no<%= (index+1) %>" class='col-xs-12 formatted-div questions'>
+            <div id="question_no<%= question.id %>" class='col-xs-12 formatted-div questions'>
                 <div class='row'>
                     <div class='col-xs-6'>
                         <h3>Question <%= question.id %> / <%= question.id.size %> </h3>
@@ -123,8 +52,7 @@
                         <% if question.timelimit == 999 %>
                             <span id='timelimit_q<%=question.id%>'>No Limit</span>
                         <% else %>
-                            /
-                            <span id='timelimit_q<%=question.id%>'><%= question.timelimit %></span>
+                            /<span id='timelimit_q<%=question.id%>'><%= question.timelimit %></span>
                         <% end %>
                     </h3>
                 </div>
@@ -171,3 +99,78 @@
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+    $(function() {
+        $('.questions').hide();
+        $('#completed').hide();
+        sessionStorage.setItem('timer', null)
+        var myid = [];
+        var incremental = 0;
+        
+        <% Test.find(session[:testID]).questions.each do |question| %>
+        myid.push(<%= question.id %>);
+        <% end %>
+
+                
+        // Interval Event
+        var updateTimer = function(myTimeCheck) {
+            timer = sessionStorage.getItem('timer');
+            if ( timer == 999 )
+            {
+                timer = null;
+                $("span#timer").html('0');
+                $("").html('');
+            }
+            else if ( timer == 0 ) {
+                $('#nextquestion').trigger('click');
+            }
+            else {
+               timer = timer - 1;
+               sessionStorage.setItem('timer', timer);
+              $("span#timer").html(timer);
+            }
+        };
+        
+
+        // Click Start Test (First Question)
+        $("#start").click( function() {
+            var timelimit = <%= @firstQtimelimit %>;
+            sessionStorage.setItem('timer', timelimit);
+            $('.questions').not('#question_no'+ myid[incremental]).hide();
+            $('#question_no' + myid[incremental]).show();
+            $("#start").parent().hide();
+            // $("#start").hide();
+        });
+        
+        // Click Next Question 
+        $(document).on('click', '#nextquestion', function(){
+            incremental++;
+            if($('#question_no' + myid[incremental]).length > 0) // if it exists...
+            {
+                var myTimeCheck = sessionStorage.setItem('timer', $('#timelimit_q'+ myid[incremental]).html()); 
+                $('.questions').not('#question_no'+ myid[incremental]).hide();
+                $('#question_no' + myid[incremental]).show();
+            }
+            else // if questions run out and next question div does not exist...
+            {
+                $('#question_no' + (myid[incremental-1])).hide();
+                $('#completed').show();
+                $.post("/results", $('#testForm').serialize(), function(returned_data){
+                    $('#completed').html(returned_data);
+                });
+                clearInterval(myTimer);
+                return false;
+            }
+        });
+
+        
+        // Warn user if RELOAD occurs - Test will be marked incomplete.
+        window.onbeforeunload = function() {
+            if(myid > 0)
+                return "Test progress will be lost/marked incomplete if you leave the page, are you sure?";
+        };
+
+        var myTimer = setInterval(updateTimer, 1000);
+    });    
+    </script>

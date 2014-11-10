@@ -17,10 +17,11 @@ class TestsController < ApplicationController
 
   def new # New Test
   	@test = Test.find_by_name(session[:test_name])
-    session[:testNo] = Test.find(@test.id)
+    session[:testNo] = Test.find(@test.id).id
     session[:testID] = @test.id.to_i
     session[:testSize] = @test.questions.count
-    @questions = @test.questions 
+    @questions = @test.questions.all
+    @firstQtimelimit = @test.questions.first.timelimit
   end
 
   def results

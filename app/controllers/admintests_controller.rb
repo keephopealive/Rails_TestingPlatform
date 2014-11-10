@@ -14,12 +14,12 @@ class AdmintestsController < ApplicationController
 	end
 
 	def new
-		@current_user = User.find(session[:user_id])
 		@newTest = Test.new 
 		@newTest.name = session[:test_name] = params[:test_name] 
 		@newTest.save
-		params[:test_id] = @newTest.id
-		redirect_to 'admintests/edit/:id'
+		session[:test_id] = params[:id] = @newTest.id
+		@currentTest = Test.find(@newTest.id)
+		render "admintests/edit"
 	end
 
 	def show
@@ -36,7 +36,7 @@ class AdmintestsController < ApplicationController
 		puts "- - PARAMS - - "
 	    puts YAML::dump(params)
 	    puts "- - END OF PARAMS - - "
-	    question = Test.find(session[:test_id]).questions.create
+	    question = Test.find(session[:test_id]).questions.create(:timelimit => 999)
       	render json: { 	
       		status: 'success', 
       		test_id: session[:test_id],
@@ -125,6 +125,10 @@ class AdmintestsController < ApplicationController
 
 
 	def edit
+		puts " - - - - - EDIT - - - - - "
+		puts "- - PARAMS - - "
+	    puts YAML::dump(params)
+	    puts "- - END OF PARAMS - - "
 		session[:test_id] = params[:id]
 		@currentTest = Test.find(params[:id])
 	end
