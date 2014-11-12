@@ -37,12 +37,9 @@ class AdmintestsController < ApplicationController
 	    puts YAML::dump(params)
 	    puts "- - END OF PARAMS - - "
 	    question = Test.find(session[:test_id]).questions.create(:timelimit => 999)
-      	render json: { 	
-      		status: 'success', 
-      		test_id: session[:test_id],
-      		question_id: question.id,
-      	}
-      	
+      	session[:test_id]
+		session[:tempQuestion_id] = question.id # <----------------- Moving Variables into file.
+		render :file => "partials/add-question.html.erb", :layout => false
 	end
 
 	def deleteQuestion
@@ -63,13 +60,10 @@ class AdmintestsController < ApplicationController
 	    puts "- - END OF PARAMS - - "
 		puts params[:question_id]
 		answer = Test.find(session[:test_id]).answers.create(:question_id => params[:question_id])
-		render json: {
-			status: 'success',
-			test_id: session[:test_id],
-			question_id: params[:question_id],
-			answer_id: answer.id
-		}
-
+		session[:test_id]
+		session[:tempQuestion_id] = params[:question_id] # <----------------- Moving Variables into file.
+		session[:tempAnswer_id] = answer.id
+		render :file => "partials/add-answer.html.erb", :layout => false
 	end
 
 	def deleteAnswer

@@ -1,9 +1,16 @@
 <li class='ui-state-default test2'>
-    <form>
-        <div class='boxed-answer'>
-            <input type='radio' name='correctAnswer'>
-            <input type='text' class='answer' name='answer" + data.answer_id +"' value=''>
-            <button class='btn btn-danger btn-xs added-answer'>X</button>
-        </div>
-    </form>
+    <div class='boxed-answer padding5'>
+        <form class='answer'>
+            <input type='hidden' name='test_id' value='<%= session[:test_id] %>'>
+            <input type='hidden' name='question_id' value='<%= session[:tempQuestion_id] %>'>
+            <input type='hidden' name='answer_id' value='<%= session[:tempAnswer_id] %>'>
+            <input type='checkbox' name='correctAnswer' class='correct-answer'>
+            <input type='text' class='answer' name='answer' value=''>
+        </form>
+        <form class='delete-answer'>
+            <input type='hidden' name='question_id' value='<%= session[:tempQuestion_id] %>'>
+            <input type='hidden' name='answer_id' value='<%= session[:tempAnswer_id] %>'>
+            <input type='submit' value='DELETE' class='btn btn-danger btn-xs added-answer'>
+        </form>
+    </div>
 </li>

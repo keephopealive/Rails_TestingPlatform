@@ -192,30 +192,9 @@
             '/addAnswer',
             $(this).serialize(),
             function(data){
-                console.log(data);
-                console.log(data.test_id);
-                console.log(data.question_id);
-                console.log(data.answer_id);
-                console.log($(this));
-                $(that).parent().children('ol').append(
-                "<li class='ui-state-default test2'>"+
-                    "<div class='boxed-answer padding5'>"+
-                    "<form class='answer'>"+
-                            "<input type='hidden' name='test_id' value='"+data.test_id+"'>"+
-                            "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
-                            "<input type='hidden' name='answer_id' value='"+data.answer_id+"'>"+
-                            "<input type='checkbox' name='correctAnswer' class='correct-answer'>"+
-                            "<input type='text' class='answer' name='answer' value=''>"+
-                        "</form>"+
-                        "<form class='delete-answer'>"+
-                            "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
-                            "<input type='hidden' name='answer_id' value='"+data.answer_id+"'>"+
-                            "<input type='submit' value='DELETE' class='btn btn-danger btn-xs added-answer'>"+
-                        "</form>"+
-                    "</div>"+
-                "</li>");
-                },
-            'json'
+               $(that).parent().children('ol').append(data);                
+            },
+            'html'
         );        
         return false;
     });
@@ -227,7 +206,6 @@
             '/deleteAnswer',
             $(this).serialize(),
             function(data){
-                console.log(data);
                 $(that).parent().parent().remove();
             },
             'json'
@@ -255,72 +233,9 @@
         $.post(
             '/addQuestion',
             function(data){
-                console.log('Test ID: ', data.test_id);
-                console.log('Question ID: ', data.question_id);
-                $('.sortable2').append(
-                "<li class='ui-state-default'>"+
-                    "<div class='row'>"+
-                        "<div class='col-xs-12 questions-div'>"+
-                            "<div class='row'>"+
-                                "<div class='col-xs-12'>"+
-                                    "<div class='question'>"+
-"<form method='post' action='/saveQuestion' class='questions'>"+
-    "<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>"+
-    "<input type='hidden' name='test_id' value='"+data.test_id+"'>"+
-    "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
-    "<textarea name='question'></textarea>"+
-"</form>"+
-                                    "</div>"+
-                                "</div>"+
-                            "</div>"+
-                            "<div class='row'>"+
-                                "<div class='col-xs-6'>"+
-                                    "<div class='answers'>"+
-                                        "<h4>Click the circle to identify correct answer.</h4>"+
-                                        "<div class=''>"+
-                                            "<ol class='ol-questions-id'></ol>"+
-                                       
-"<form class='add-answer'>"+
-    "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
-    "<input type='submit' class='btn btn-success wide40' value='Add an Answer'>"+
-"</form>"+
- "</div>"+
-                                    "</div>"+
-                                "</div>"+
-                                "<div class='col-xs-6'>"+
-                                    "<div class='row'>"+
-                                        "<div class='options'>"+
-                                            "<div class='row padding15'>"+
-                                                "<h4>Set the test options.</h4>"+
-                                                "<div class='top'>"+
-                                                    "<div class='col-xs-6 padded'>"+
-                                                        "<label>Enter Time Limit:</label>"+
-                                                        "<br>"+
-                                                    "</div>"+
-                                                    "<div class='col-xs-6 padded'>"+
-                                                        "<input type='stopwatch' class='timelimit' placeholder='00:00' value='999'>"+
-                                                        "<br>"+
-                                                    "</div>"+
-                                                "</div>"+
-                                            "</div>"+
-                                            "<div class='row padding15'>"+
-                                                "<div class='bottom padded'>"+
-"<form class='deleteQuestion' method='post' action='/deleteQuestion'>"+
-    "<input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>"+
-    "<input type='hidden' name='question_id' value='"+data.question_id+"'>"+
-    "<input type='submit' value='DELETE QUESTION' class='btn btn-danger deleteQuestion_btn'>"+
-"</form>"+
-                                                "</div>"+
-                                            "</div>"+
-                                        "</div>"+
-                                    "</div>"+
-                                "</div>"+
-                            "</div>"+
-                        "</div>"+
-                    "</div>"+
-                "</li>");  
+                $('.sortable2').append(data);  
             },
-            'json'
+            'html'
         );
         return false;
     });
