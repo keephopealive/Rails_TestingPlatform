@@ -16,7 +16,7 @@ class TestsController < ApplicationController
   end
 
   def new # New Test
-  	@test = Test.find_by_name(session[:test_name])
+  	@test = Test.find_by_name(session[:test_name]) # CHANGE - Test ID?
     session[:testNo] = Test.find(@test.id).id
     session[:testID] = @test.id.to_i
     session[:testSize] = @test.questions.count

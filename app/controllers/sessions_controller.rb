@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
     end
   end
 
-  def show
+  def show # Change - Delete all unnecessary lins of code / unsued code
 
   end
 

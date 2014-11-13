@@ -5,7 +5,7 @@ class AdmintestsController < ApplicationController
 		if (session[:user_id] == nil)
 		  redirect_to '/', :notice => "Please sign in to access this page."
 		else
-		  @current_user = User.find(session[:user_id])
+		  @current_user = User.find(session[:user_id]) # CHANGE - [:user][:first_name] etc
 		  session[:first_name] = @current_user.first_name
 		  session[:last_name] = @current_user.last_name
 		  session[:email] = @current_user.email
@@ -20,14 +20,6 @@ class AdmintestsController < ApplicationController
 		session[:test_id] = params[:id] = @newTest.id
 		@currentTest = Test.find(@newTest.id)
 		render "admintests/edit"
-	end
-
-	def show
-
-	end
-
-	def update
-
 	end
 
 	# Questions
