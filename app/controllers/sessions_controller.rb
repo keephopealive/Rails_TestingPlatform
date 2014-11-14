@@ -1,11 +1,5 @@
 class SessionsController < ApplicationController
   include SessionsHelper
-  
-  # L O G I N 
-
-  def new
-    # Renders view page for new login form
-  end
 
   def create
     user = User.authenticate(params[:email], params[:password])
@@ -16,10 +10,6 @@ class SessionsController < ApplicationController
       session[:user_id] = user.id
       redirect_to '/admintests'
     end
-  end
-
-  def show # Change - Delete all unnecessary lins of code / unsued code
-
   end
 
   def destroy

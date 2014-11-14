@@ -3,7 +3,6 @@ class TestsController < ApplicationController
   layout "student"
 
   def index # Landing Page
-  	# Take Test Form Redirect to Create
   	@alltests = Test.all 
   end
 
@@ -25,10 +24,6 @@ class TestsController < ApplicationController
   end
 
   def results
-    puts "- - PARAMS - - "
-    puts YAML::dump(params)
-    puts "- - END OF PARAMS - - "
-
     @myArray = Array.new
     @myArray.push(session[:testID]) # Push in Test ID
     Test.find(session[:testID]).answers.select(:id, :question_id).where(:correct=>true).each do |line| 
@@ -39,21 +34,12 @@ class TestsController < ApplicationController
     countIncorrect = 0;
 
     params.each_with_index do |param, index|
-      puts " "
       if index > 0 && index <= session[:testSize].to_i
-        puts " - - - - = = = = Question ##{param[0]} = = = = - - - - "
-        puts "Question: ##{param[0]} (presented to user)"
-        puts "Answer: ##{param[1]} (chosen by user)"
-        puts "Actual: ##{@myArray.at(index).to_i} (actual answer)"
         if param[1].to_i === @myArray.at(index).to_i
-          puts "Result: - = CORRECT = -"
           countCorrect += 1
         else
-          puts "Result: - = INCORRECT = -"
           countIncorrect += 1
         end
-        puts " - - - - = = = = END = = = = - - - - "
-        puts " "
       end
     end
 
@@ -82,9 +68,7 @@ class TestsController < ApplicationController
     render :text => "<div class='formatted-div'><h3>Score Results</h3><h5>Number of Correct: #{countCorrect}</h5><h5>Number of Incorrect: #{countIncorrect}</h5><h2>Final Score: #{finalGrade}%</h2></div>"
   end
 
-  def show # Show Test Results
-   	  	
+  def show # Show Test Results   	  	
   end
-
 
 end

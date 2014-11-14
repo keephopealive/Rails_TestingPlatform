@@ -25,21 +25,13 @@ class AdmintestsController < ApplicationController
 	# Questions
 
 	def addQuestion
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
 	    question = Test.find(session[:test_id]).questions.create(:timelimit => 999)
-      	session[:test_id]
-		session[:tempQuestion_id] = question.id # <----------------- Moving Variables into file.
+		session[:tempQuestion_id] = question.id # <- Moving Variables into file.
 		render :file => "partials/add-question.html.erb", :layout => false
 	end
 
 	def deleteQuestion
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
 		Question.find(params[:question_id]).destroy
-		puts params[:question_id]
 		Answer.where(:question_id => params[:question_id]).destroy_all
 		render json: { status: true}
 	end
@@ -47,21 +39,13 @@ class AdmintestsController < ApplicationController
 	# Answers
 
 	def addAnswer
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
-		puts params[:question_id]
 		answer = Test.find(session[:test_id]).answers.create(:question_id => params[:question_id])
-		session[:test_id]
 		session[:tempQuestion_id] = params[:question_id] # <----------------- Moving Variables into file.
 		session[:tempAnswer_id] = answer.id
 		render :file => "partials/add-answer.html.erb", :layout => false
 	end
 
 	def deleteAnswer
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
 	    Answer.find(params[:answer_id]).destroy
 		render json: {
 			status: 'success',
@@ -71,9 +55,6 @@ class AdmintestsController < ApplicationController
 	end
 
 	def saveQuestion
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
 	    Question.find(params[:question_id]).update(:question=>params[:question])
 		render json: {
 			type: 'saveQuestion',
@@ -82,10 +63,6 @@ class AdmintestsController < ApplicationController
 	end
 
 	def updateAnswer
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
-	    
 		if params[:correctAnswer]
 			answer = true
 		else
@@ -99,9 +76,6 @@ class AdmintestsController < ApplicationController
 	end
 
 	def updateAnswerTimeLimit
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
 		Question.find(params[:question_id]).update(:timelimit=>params[:timelimit])		
 		render json: {
 			type: 'updateAnswerTimeLimit',
@@ -111,10 +85,6 @@ class AdmintestsController < ApplicationController
 
 
 	def edit
-		puts " - - - - - EDIT - - - - - "
-		puts "- - PARAMS - - "
-	    puts YAML::dump(params)
-	    puts "- - END OF PARAMS - - "
 		session[:test_id] = params[:id]
 		@currentTest = Test.find(params[:id])
 	end

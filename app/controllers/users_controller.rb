@@ -1,16 +1,10 @@
 class UsersController < ApplicationController
     include SessionsHelper
        layout "student"
-
-
-  # R E G I S T R A T I O N
   
   def index
     reset_session
     flash.discard
-  end
-
-  def new
   end
 
   def create
@@ -34,12 +28,4 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def edit
-  end
-
-  def update
-  end
-
-  def destroy
-  end
 end
