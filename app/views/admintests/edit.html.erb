@@ -65,15 +65,15 @@
              <li class='ui-state-default test2'>
                 <div class='boxed-answer padding5'>
 <!-- UPDATE ANSWER CONTENT -->                        
-<form class="answer">
+<form class="answer answersFromQ<%= question.id %>" method="post" action="updateAnswer">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
     <input type='hidden' name='answer_id' value='<%= answer.id %>'> 
     <% if answer.correct %>
-        <input type='checkbox' name='correctAnswer' class='correct-answer' checked />
+        <input type='checkbox' name='answerValue' group-name='answerValue<%= question.id %>' question_id='<%= question.id %>' value='true' class='radio correct-answer' checked='true'/>
     <% else %>
-        <input type='checkbox' name='correctAnswer' class='correct-answer'>
+        <input type='checkbox' name='answerValue' group-name='answerValue<%= question.id %>'  question_id='<%= question.id %>' value='false' class='radio correct-answer'/>
     <% end %>
     <input type='text' class='answer' name='answer' value='<%= answer.answer %>'>
 </form>
@@ -149,6 +149,36 @@
 <script type="text/javascript">
 
 // UPDATE ANSWER CONTENT
+$(document).on('click', 'input:checkbox', function(){
+  // in the handler, 'this' refers to the box clicked on
+    var $box = $(this);
+    console.log($box.attr("name")+$box.attr("question_id"));
+    if ($box.is(":checked")) {
+        var group = "input:checkbox[group-name='" + $box.attr("group-name") + "']";
+        console.log(group);
+        $(group).prop("checked", false);
+        $(group).attr("checked", false);
+        $(group).attr("value", 'false');
+        $box.prop("checked", true);
+        $box.attr("checked", true);
+        $box.attr("value", 'true');
+        $(group).closest('form.answersFromQ'+$box.attr("question_id")).each(function(){
+            console.log(this);
+            $.post(
+                '/updateAnswer',
+                $(this).serialize(),
+                function(data){
+                    console.log(data);
+                },
+                'json'
+            );
+        });
+    } 
+    else {
+        $box.prop("checked", false);
+    }
+});
+
 // UPDATE QUESTION CONTENT
     $(document).on('click', '#saveQuestions', function(){
         $('form.questions').each(function(){

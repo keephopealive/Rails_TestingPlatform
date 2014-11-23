@@ -39,9 +39,12 @@ class AdmintestsController < ApplicationController
 	# Answers
 
 	def addAnswer
+		puts "CAME HERE"
 		answer = Test.find(session[:test_id]).answers.create(:question_id => params[:question_id])
 		session[:tempQuestion_id] = params[:question_id] # <----------------- Moving Variables into file.
 		session[:tempAnswer_id] = answer.id
+		session[:tempAuthTok] = form_authenticity_token
+		puts session[:tempAuthTok]
 		render :file => "partials/add-answer.html.erb", :layout => false
 	end
 
@@ -63,7 +66,7 @@ class AdmintestsController < ApplicationController
 	end
 
 	def updateAnswer
-		if params[:correctAnswer]
+		if params[:answerValue] == 'true'
 			answer = true
 		else
 			answer = false
