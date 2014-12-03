@@ -17,6 +17,7 @@
 /* ALL */
 @import 'bootstrap';
 
+
 div.container {
   width: 1000px;
   text-align: top;
@@ -227,4 +228,10 @@ input.timelimit {
 }
 ul.user-answers li{
     list-style: none;
+}
+
+textarea.test-description{
+  color:black;
+  width: 95%;
+  height: 100px;
 }

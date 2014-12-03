@@ -8,7 +8,7 @@
     <input type='hidden' name='authenticity_token' value='<%= form_authenticity_token %>'>
     <input type='hidden' name='test_id' value='<%= session[:test_id] %>'>
     <input type='hidden' name='question_id' value='<%= session[:tempQuestion_id] %>'>
-    <textarea name='question'></textarea>
+    <textarea name='question' class='question-content'></textarea>
 </form>
                                     </div>
                                 </div>
@@ -37,7 +37,11 @@
                                                         <br>
                                                     </div>
                                                     <div class='col-xs-6 padded'>
-                                                        <input type='stopwatch' class='timelimit' placeholder='00:00' value='999'>
+<form class='timelimit' method='post' action='/updateQuestionTimer'>
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+    <input type='hidden' name='question_id' value='<%= session[:tempQuestion_id] %>'>
+    <input type='number' name='timelimit' class='timelimit timelimit-content' value="999" placeholder='00:00'>
+</form>
                                                         <br>
                                                     </div>
                                                 </div>

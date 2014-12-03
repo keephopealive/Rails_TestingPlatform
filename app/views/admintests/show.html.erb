@@ -1,21 +1,33 @@
-	<div class="row"> <!-- SECTION: SEARCH CRITERIA ROW -->
+<script type="text/javascript">
+    $(document).on('keyup', 'form', function(){
+        $.post(
+            $(this).attr('action'),
+            $(this).serialize(),
+            function(return_data){
+                console.log(return_data);
+                $('.results-table').html(return_data);
+            },
+            'html'
+        );
+    });
+</script>
+    <div class="row"> <!-- SECTION: SEARCH CRITERIA ROW -->
 	    <div class="col-xs-12 formatted-div">
             <div class="row">
+                <center><h3>Search by</h3></center>
                 <div class="col-xs-6">
-                    <h3>Search by Student Name:</h3>
-                    <label for="">Search:</label> <input type="text">
-                    <select name="" id="" class="padding5">
-                        <option  value="James Johnson" selected>James Johnson</option>
-                        <option value="Jessica Alba">Jessica Alba</option>
-                    </select> 
+                    <form method='post' action='/search/name'>
+                        <label for="">Name: 
+                            <input name='name' type="text">
+                        </label>
+                    </form>
                 </div>
                 <div class="col-xs-6">
-                    <h3>Search by Test ID or Name:</h3>
-                    <label for="">Search:</label> <input type="text">
-                     <select name="" id="" class="padding5">
-                        <option  value="Coding Challenge 101" selected>Coding Challenge 101</option>
-                        <option value="Coding Challenge 202">Coding Challenge 202</option>
-                    </select>    
+                    <form method='post' action='/search/email'>
+                        <label for="">Email: 
+                            <input name='email' type="text">
+                        </label>
+                    </form>
                 </div>
             </div>
         </div>
@@ -25,34 +37,38 @@
 	    <div class="col-xs-12 formatted-div">
             <div class="row padding15">
                 <h2>Results: </h2>
-                 <table class="table table-results">
+                <div class='results-table'>
+                 <table class="table table-results addRows">
                     <thead>
                         <tr>
                             <td>Test Name</td>
                             <td>Test ID:</td>
                             <td>Student Name:</td>
                             <td>Pass/Fail:</td>
-                            <td>Score:</td>
-                            <td>On-Time:</td>
+                            <td>Score (%):</td>
                         </tr>
                     </thead>
+                    <% @results.each do |result| %>
+                    <% if result.score.to_i > 70 %>
                     <tr class="success">
-                        <td>Coding Challenge 101</td>
-                        <td>1234</td>
-                        <td>James Johnson</td>
-                        <td>PASS</td>
-                        <td>78%</td>
-                        <td>YES</td>
-                    </tr>
+                    <% else %>
                     <tr class="danger">
-                        <td>Coding Challenge 202</td>
-                        <td>1234</td>
-                        <td>James Johnson</td>
-                        <td>FAIL</td>
-                        <td>53%</td>
-                        <td>NO</td>
+                    <% end %>
+                        <td><%= result.test_name %></td>
+                        <td><%= result.test_id %></td>
+                        <td><%= result.first_name %> <%= result.last_name %></td>
+                        <td>
+                            <% if result.score.to_i > 70 %>
+                            <%= "Pass" %>
+                            <% else %>
+                            <%= "Fail" %>
+                            <% end %>
+                        </td>
+                        <td><%= result.score %></td>    
                     </tr>
+                    <% end %>
                 </table>
+                </div>
             </div>
         </div>
     </div> <!-- END SECTION: QUESTION ANSWERS & OPTIONS ROW -->

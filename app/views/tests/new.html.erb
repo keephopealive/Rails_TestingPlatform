@@ -1,11 +1,6 @@
-
-
-
-
 <head>
 	<title>User - Test</title>
 </head>
-
 	<div class="row"> <!-- SECTION: NAVIGATION ROW -->
 		<div class="col-xs-12 formatted-div">        
             <div class="row">     
@@ -25,19 +20,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 formatted-div">
-            <h3>Description</h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure 
-            </p>
-            <a href="#" id="start"class="btn btn-success btn-lg padding5 wide40">Begin Test!</a>
-        </div>
-	</div> <!-- END SETION: TEST DETAILS ROW -->
-
 
 	<div class="row" id="question_div"> <!-- SECTION: QUESTION ANSWERS & OPTIONS ROW -->
         <form method="post" action="/results" id="testForm">
@@ -100,6 +82,9 @@
 
     <script type="text/javascript">
     $(function() {
+
+
+
         $('.questions').hide();
         $('#completed').hide();
         sessionStorage.setItem('timer', null)
@@ -110,7 +95,14 @@
         myid.push(<%= question.id %>);
         <% end %>
 
-                
+            
+        var timelimit = <%= @firstQtimelimit %>;
+        sessionStorage.setItem('timer', timelimit);
+        $('.questions').not('#question_no'+ myid[incremental]).hide();
+        $('#question_no' + myid[incremental]).show();
+        $("#start").parent().hide();    
+
+
         // Interval Event
         var updateTimer = function(myTimeCheck) {
             timer = sessionStorage.getItem('timer');
@@ -154,8 +146,11 @@
             {
                 $('#question_no' + (myid[incremental-1])).hide();
                 $('#completed').show();
-                $.post("/results", $('#testForm').serialize(), function(returned_data){
-                    $('#completed').html(returned_data);
+                $.post(
+                    "/results", 
+                    $('#testForm').serialize(), 
+                    function(returned_data){
+                        $('#completed').html(returned_data);
                 });
                 clearInterval(myTimer);
                 return false;

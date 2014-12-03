@@ -1,0 +1,30 @@
+<table class="table table-results addRows">
+    <thead>
+        <tr>
+            <td>Test Name</td>
+            <td>Test ID:</td>
+            <td>Student Name:</td>
+            <td>Pass/Fail:</td>
+            <td>Score (%):</td>
+        </tr>
+    </thead>
+    <% @results.each do |result| %>
+    <% if result.score.to_i > 70 %>
+    <tr class="success">
+    <% else %>
+    <tr class="danger">
+    <% end %>
+        <td><%= result.test_name %></td>
+        <td><%= result.test_id %></td>
+        <td><%= result.first_name %> <%= result.last_name %></td>
+        <td>
+            <% if result.score.to_i > 70 %>
+            <%= "Pass" %>
+            <% else %>
+            <%= "Fail" %>
+            <% end %>
+        </td>
+        <td><%= result.score %></td>    
+    </tr>
+    <% end %>
+</table>

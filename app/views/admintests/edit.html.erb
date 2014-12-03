@@ -10,6 +10,7 @@
 	    <div class="col-xs-12 formatted-div">
             <div class="row">
                 <h3>Update Test Information:</h3>
+                <br>
                 <div class="col-xs-5 padding5">
                     <div class="col-xs-4">
                         <label>Test Name:</label><br>
@@ -30,13 +31,18 @@
                 </div>
                 <div class="col-xs-3 padding5">
                     <button class="btn btn-primary">SAVE</button>
-                    <button class="btn btn-danger">Delete</button>
+                    <button href="/admintests/destroy/<%= @currentTest.id %>"class="btn btn-danger">Delete</button>
                 </div>
+            </div>
+            <br>
+            <div class="row test-description">
+                <label class='test-description'>Test Description</label>
+                <form action='/updateTestDescription' method='post'>
+                    <textarea name='description' class='test-description' placeholder='Enter content of which you would like to show the test taker just prior to the beginning of their test. This is usually used for setting test rules and expectations with the test taker...'><%= @currentTest.description %></textarea>
+                </form>
             </div>
 		</div>
 	</div> <!-- END SETION: TEST DETAILS ROW -->
-    
-
 
     <ol class="sortable2" class="ol-questions" toleranceElement=" > ol"> <!-- QUESTIONS SORT -->       
     <% @currentTest.questions.each do |question| %> 
@@ -51,7 +57,7 @@
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
-    <textarea name='question'><%= question.question %></textarea>
+    <textarea name='question' class='question-content'><%= question.question %></textarea>
 </form>
                             </div>
                         </div>
@@ -65,7 +71,7 @@
              <li class='ui-state-default test2'>
                 <div class='boxed-answer padding5'>
 <!-- UPDATE ANSWER CONTENT -->                        
-<form class="answer answersFromQ<%= question.id %>" method="post" action="updateAnswer">
+<form class="answer answersFromQ<%= question.id %>" method="post" action="/updateAnswer">
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type='hidden' name='test_id' value='<%= @currentTest.id %>'>
     <input type='hidden' name='question_id' value='<%= question.id %>'>
@@ -75,7 +81,7 @@
     <% else %>
         <input type='checkbox' name='answerValue' group-name='answerValue<%= question.id %>'  question_id='<%= question.id %>' value='false' class='radio correct-answer'/>
     <% end %>
-    <input type='text' class='answer' name='answer' value='<%= answer.answer %>'>
+    <input type='text' class='answer answer-content' name='answer' value='<%= answer.answer %>'>
 </form>
 <!-- DELETE ANSWER -->
 <form class="delete-answer">
@@ -106,10 +112,10 @@
                                                 <label>Enter Time Limit:</label><br>
                                             </div>
                                             <div class='col-xs-6 padded'>
-<form class='timelimit'>
+<form class='timelimit' method='post' action='/updateQuestionTimer'>
     <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
     <input type='hidden' name='question_id' value='<%= question.id %>'>
-    <input type='number' name='timelimit' class='timelimit' value="<%= question.timelimit %>" placeholder='00:00'>
+    <input type='number' name='timelimit' class='timelimit timelimit-content' value="<%= question.timelimit %>" placeholder='00:00'>
 </form>
                                                 <br>
                                             </div>
@@ -140,9 +146,9 @@
         <div class="col-xs-offset-2 col-xs-8">
            <div class="formatted-div">
                 <!-- ADD QUESTION -->
-                <button class="btn btn-success wide40" id="addQuestion">Add New Question</button>
-                <button class="btn btn-primary wide40" id="saveQuestions">SAVE</button>
-           </div>
+                <button class="btn btn-success wide80" id="addQuestion">Add New Question</button>
+<!--                 <button class="btn btn-primary wide40" id="saveQuestions">SAVE</button>
+ -->           </div>
         </div>
     </div>
 
@@ -179,41 +185,86 @@ $(document).on('click', 'input:checkbox', function(){
     }
 });
 
-// UPDATE QUESTION CONTENT
-    $(document).on('click', '#saveQuestions', function(){
-        $('form.questions').each(function(){
-            console.log(this);
-            $.post(
-                '/saveQuestion',
-                $(this).serialize(),
-                function(data){
-                    console.log(data);
-                },
-                'json'
-            );         
-        });
-        $('form.answer').each(function(){
-            $.post(
-                '/updateAnswer',
-                $(this).serialize(),
-                function(data){
-                    console.log(data);
-                },
-                'json'
-            );
-        });
-        $('form.timelimit').each(function(){
-            $.post(
-                '/updateAnswerTimeLimit',
-                $(this).serialize(),
-                function(data){
-                    console.log(data);
-                },
-                'json'
-            );
-        });
+// UPDATE TEST DESCRIPTION
+    $(document).on('focusout', 'textarea.test-description', function(){
+        var temp = $(this).parent();
+        console.log(temp);
+        $.post(
+            $(temp).attr('action'),
+            $(temp).serialize(),
+            function(data){
+                console.log(data);
+            },
+            'json'
+        );
         return false;
     });
+// UPDATE QUESTION CONTENT
+    $(document).on('focusout', '.question-content', function(){
+        var temp = $(this).parent();
+        console.log(temp);
+        $.post(
+            $(temp).attr('action'),
+            $(temp).serialize(),
+            function(data){
+                console.log(data);
+            },
+            'json'
+        );
+        return false;
+    });
+
+// UPDATE QUESTION TIMER
+    $(document).on('focusout', '.timelimit-content', function(){
+        var temp = $(this).parent();
+        console.log(temp);
+        $.post(
+            $(temp).attr('action'),
+            $(temp).serialize(),
+            function(data){
+                console.log(data);
+            },
+            'json'
+        );
+        return false;
+    });
+
+
+// UPDATE QUESTION CONTENT
+    // $(document).on('click', '#saveQuestions', function(){
+    //     $('form.questions').each(function(){
+    //         console.log(this);
+    //         $.post(
+    //             '/saveQuestion',
+    //             $(this).serialize(),
+    //             function(data){
+    //                 console.log(data);
+    //             },
+    //             'json'
+    //         );         
+    //     });
+    //     $('form.answer').each(function(){
+    //         $.post(
+    //             '/updateAnswer',
+    //             $(this).serialize(),
+    //             function(data){
+    //                 console.log(data);
+    //             },
+    //             'json'
+    //         );
+    //     });
+    //     $('form.timelimit').each(function(){
+    //         $.post(
+    //             '/updateAnswerTimeLimit',
+    //             $(this).serialize(),
+    //             function(data){
+    //                 console.log(data);
+    //             },
+    //             'json'
+    //         );
+    //     });
+    //     return false;
+    // });
 
 // ADD ANSWER 
     $(document).on('submit', 'form.add-answer', function(){
@@ -228,7 +279,20 @@ $(document).on('click', 'input:checkbox', function(){
         );        
         return false;
     });
-
+// UPDATE ANSWER CONTENT
+    $(document).on('focusout', '.answer-content', function(){
+        var temp = $(this).parent();
+        console.log(temp);
+        $.post(
+            $(temp).attr('action'),
+            $(temp).serialize(),
+            function(data){
+                console.log(data);
+            },
+            'json'
+        );
+        return false;
+    });
 // DELETE ANSWER 
     $(document).on('submit', 'form.delete-answer', function(){
         var that = $(this);
