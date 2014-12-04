@@ -14,7 +14,7 @@ class AdmintestsController < ApplicationController
 		end
 	end
 
-# Test
+# Test Render View
 	def new
 		@newTest = Test.new 
 		@newTest.name = session[:test_name] = params[:test_name] 
@@ -22,48 +22,43 @@ class AdmintestsController < ApplicationController
 		session[:test_id] = params[:id] = @newTest.id
 		redirect_to :controller => 'admintests', :action => 'edit', :id => @newTest.id
 	end
-	
+# Ajax	
 	def edit
 		session[:test_id] = params[:id]
 		@currentTest = Test.find(params[:id])
 	end
-
+# Ajax
 	def destroy 
 		test = Test.find(params[:id]).destroy
 		redirect_to admintests_path
 	end
 
 
-
+# Render View
 	def show # Show User Results:
 		@results = Result.all
-
-		# @result = Result.last.xml_result
-		# puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-		# puts @result
-		# puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-	 	# @doc = Nokogiri::XML(@result)
-		# @doc.xpath("//final_grade")
-		# render :html => @doc.xpath("//final_grade")
 	end
-
+# Ajax
 	def getNames
-		@results = Result.all(:limit => 2)
-		render :file => "partials/results-table.html.erb", :layout => false
+		@results = Result.where(Result.arel_table[:first_name].matches("%#{params[:name]}%").or(Result.arel_table[:last_name].matches("%#{params[:name]}%")))
+		render :file => "partials/results-table.html.erb", :layout => false, collection: @results
 	end
-
+# Ajax
 	def getEmails
-		@results = Result.first
-		render :file => "partials/results-table.html.erb", :layout => false
+		@results = Result.where(Result.arel_table[:email].matches("%#{params[:email]}%"))
+		render :file => "partials/results-table.html.erb", :layout => false, collection: @results
 	end
-
-	# def xmlContent
-	# 	@results = Result.first		
-	# 	render xml: @results
-	# end
-
+# Ajax
 	def updateTestDescription
 		result = Test.find(session[:test_id]).update(:description => params[:description])
+		render json: {
+			type: 'updateTestDescription',
+			status: 'success'
+		}
+	end
+# Ajax
+	def updateTestNameUrl
+		result = Test.find(session[:test_id]).update(:name => params[:testName], :url => params[:url])
 		render json: {
 			type: 'updateTestDescription',
 			status: 'success'
@@ -76,6 +71,7 @@ class AdmintestsController < ApplicationController
 		session[:tempQuestion_id] = question.id # <- Moving Variables into file.
 		render :file => "partials/add-question.html.erb", :layout => false
 	end
+# Ajax
 	def saveQuestion
 	    Question.find(params[:question_id]).update(:question=>params[:question])
 		render json: {
@@ -83,12 +79,14 @@ class AdmintestsController < ApplicationController
 			status: 'success'
 		}		
 	end
+# Ajax
 	def deleteQuestion
 		puts YAML::dump(params)
 		Question.find(params[:question_id]).destroy
 		Answer.where(:question_id => params[:question_id]).destroy_all
 		render json: { status: true}
 	end
+# Ajax
 	def updateQuestionTimer
 		Question.find_by_id(params[:question_id]).update(:timelimit => params[:timelimit])
 		render json: { 
@@ -107,6 +105,7 @@ class AdmintestsController < ApplicationController
 		puts session[:tempAuthTok]
 		render :file => "partials/add-answer.html.erb", :layout => false
 	end
+# Ajax
 	def updateAnswer
 		if params[:answerValue] == 'true'
 			answer = true
@@ -119,6 +118,7 @@ class AdmintestsController < ApplicationController
 			status: 'success'
 		}	
 	end
+# Ajax
 	def deleteAnswer
 	    Answer.find(params[:answer_id]).destroy
 		render json: {
@@ -127,6 +127,7 @@ class AdmintestsController < ApplicationController
 			question_id: params[:question_id],
 		}
 	end
+# Ajax
 	def updateAnswerTimeLimit
 		Question.find(params[:question_id]).update(:timelimit=>params[:timelimit])		
 		render json: {

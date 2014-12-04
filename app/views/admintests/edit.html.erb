@@ -17,8 +17,10 @@
                         <label>Test URL:</label>
                     </div>
                     <div class="col-xs-8 font-black">
-                        <input class="wide100" value="<%= @currentTest.name %>"><br>
-                        <input class="wide100" value="url/here/">
+                        <form method='post' action='/updateTestNameUrl'>
+                            <input class="wide100 test-description" name='testName' value="<%= @currentTest.name %>"><br>
+                            <input class="wide100 test-description" name='url'value="/tests/<%= @currentTest.id %>/pretest">
+                        </form>
                     </div>
                 </div>
                 <div class="col-xs-4 padding5">
@@ -30,8 +32,8 @@
                     </div>
                 </div>
                 <div class="col-xs-3 padding5">
-                    <button class="btn btn-primary">SAVE</button>
-                    <button href="/admintests/destroy/<%= @currentTest.id %>"class="btn btn-danger">Delete</button>
+                    <!-- <button class="btn btn-primary">SAVE</button>  --> <!-- Not required - saves all by ajax on changes -->
+                    <%= link_to "Delete", admintest_path(), :method => :delete, :class =>'btn btn-danger'%>
                 </div>
             </div>
             <br>
@@ -184,7 +186,20 @@ $(document).on('click', 'input:checkbox', function(){
         $box.prop("checked", false);
     }
 });
-
+// UPDATE TEST DESCRIPTION
+    $(document).on('focusout', 'input.test-description', function(){
+        var temp = $(this).parent();
+        console.log(temp);
+        $.post(
+            $(temp).attr('action'),
+            $(temp).serialize(),
+            function(data){
+                console.log(data);
+            },
+            'json'
+        );
+        return false;
+    });
 // UPDATE TEST DESCRIPTION
     $(document).on('focusout', 'textarea.test-description', function(){
         var temp = $(this).parent();
@@ -228,43 +243,6 @@ $(document).on('click', 'input:checkbox', function(){
         );
         return false;
     });
-
-
-// UPDATE QUESTION CONTENT
-    // $(document).on('click', '#saveQuestions', function(){
-    //     $('form.questions').each(function(){
-    //         console.log(this);
-    //         $.post(
-    //             '/saveQuestion',
-    //             $(this).serialize(),
-    //             function(data){
-    //                 console.log(data);
-    //             },
-    //             'json'
-    //         );         
-    //     });
-    //     $('form.answer').each(function(){
-    //         $.post(
-    //             '/updateAnswer',
-    //             $(this).serialize(),
-    //             function(data){
-    //                 console.log(data);
-    //             },
-    //             'json'
-    //         );
-    //     });
-    //     $('form.timelimit').each(function(){
-    //         $.post(
-    //             '/updateAnswerTimeLimit',
-    //             $(this).serialize(),
-    //             function(data){
-    //                 console.log(data);
-    //             },
-    //             'json'
-    //         );
-    //     });
-    //     return false;
-    // });
 
 // ADD ANSWER 
     $(document).on('submit', 'form.add-answer', function(){

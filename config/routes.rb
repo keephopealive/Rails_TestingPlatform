@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root to: 'tests#index'
   post '/updateTestDescription' => 'admintests#updateTestDescription'
+  post '/updateTestNameUrl' => 'admintests#updateTestNameUrl'
   post '/addQuestion' => 'admintests#addQuestion'
   post '/deleteQuestion' => 'admintests#deleteQuestion'
   post '/addAnswer' => 'admintests#addAnswer'
@@ -19,7 +20,7 @@ Rails.application.routes.draw do
 
   post '/tests' => 'tests#create'
   get '/tests/pretest' => 'tests#pretest'
-
+  get '/tests/:id/pretest' => 'tests#pretest'
   get '/tests/new/:id' => 'tests#new'
   post '/getXML' => 'admintests#xmlContent'
   get 'admintests/newShow' => 'admintests#newShow'
@@ -27,7 +28,7 @@ Rails.application.routes.draw do
 
   # AJAX 
   post '/search/name' => 'admintests#getNames'
-  post '/search/email' => 'admintests#getEmail'
+  post '/search/email' => 'admintests#getEmails'
 
 
   resources :tests, :users, :sessions, :admintests
