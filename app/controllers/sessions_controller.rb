@@ -17,5 +17,4 @@ class SessionsController < ApplicationController
     current_user = nil
     redirect_to '/'
   end
-
 end

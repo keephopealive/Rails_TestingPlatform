@@ -149,13 +149,11 @@
            <div class="formatted-div">
                 <!-- ADD QUESTION -->
                 <button class="btn btn-success wide80" id="addQuestion">Add New Question</button>
-<!--                 <button class="btn btn-primary wide40" id="saveQuestions">SAVE</button>
- -->           </div>
+           </div>
         </div>
     </div>
 
 <script type="text/javascript">
-
 // UPDATE ANSWER CONTENT
 $(document).on('click', 'input:checkbox', function(){
   // in the handler, 'this' refers to the box clicked on
@@ -186,6 +184,7 @@ $(document).on('click', 'input:checkbox', function(){
         $box.prop("checked", false);
     }
 });
+
 // UPDATE TEST DESCRIPTION
     $(document).on('focusout', 'input.test-description', function(){
         var temp = $(this).parent();
@@ -200,6 +199,7 @@ $(document).on('click', 'input:checkbox', function(){
         );
         return false;
     });
+
 // UPDATE TEST DESCRIPTION
     $(document).on('focusout', 'textarea.test-description', function(){
         var temp = $(this).parent();
@@ -214,6 +214,7 @@ $(document).on('click', 'input:checkbox', function(){
         );
         return false;
     });
+
 // UPDATE QUESTION CONTENT
     $(document).on('focusout', '.question-content', function(){
         var temp = $(this).parent();
@@ -257,6 +258,7 @@ $(document).on('click', 'input:checkbox', function(){
         );        
         return false;
     });
+
 // UPDATE ANSWER CONTENT
     $(document).on('focusout', '.answer-content', function(){
         var temp = $(this).parent();
@@ -271,6 +273,7 @@ $(document).on('click', 'input:checkbox', function(){
         );
         return false;
     });
+
 // DELETE ANSWER 
     $(document).on('submit', 'form.delete-answer', function(){
         var that = $(this);
@@ -298,7 +301,6 @@ $(document).on('click', 'input:checkbox', function(){
         );
         return false;
     });
-        
 
 // ADD QUESTION   
     $(document).on('click', '#addQuestion', function(){
@@ -311,7 +313,4 @@ $(document).on('click', 'input:checkbox', function(){
         );
         return false;
     });
-
 </script>
-
-

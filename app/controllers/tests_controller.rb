@@ -14,13 +14,18 @@ class TestsController < ApplicationController
   end
 
   def pretest # New Test
-  	@test = Test.find_by_name(session[:test_name]) # CHANGE - Test ID?
+    if (params[:id])
+      @test = Test.find(params[:id])
+    else 
+      @test = Test.find_by_name(session[:test_name])
+    end
     session[:testNo] = Test.find(@test.id).id
     session[:testID] = @test.id.to_i
     session[:testSize] = @test.questions.count
   end
 
   def new # New Test
+    session[:timeA] = Time.current()
     @test = Test.find(session[:testID]) # CHANGE - Test ID?
     session[:testNo] = Test.find(@test.id).id
     session[:testID] = @test.id.to_i
@@ -30,6 +35,18 @@ class TestsController < ApplicationController
   end
 
   def results
+    session[:timeB] = Time.current()
+    userTotalTestTime = session[:timeB].to_i - session[:timeA].to_i
+    testTotalTestTime = 10
+
+    @totalTestTime = Array.new   
+    Test.find(session[:testID]).questions.each do |ques| 
+      testTotalTestTime += ques.timelimit
+    end
+
+    if(userTotalTestTime > testTotalTestTime)
+    end
+
     @myArray = Array.new
     @myArray.push(session[:testID]) # Push in Test ID
     Test.find(session[:testID]).answers.select(:id, :question_id).where(:correct=>true).each do |line| 
@@ -56,16 +73,6 @@ class TestsController < ApplicationController
     (percentGradetemp).round(2)
     percentGrade = percentGradetemp * 100
     finalGrade = percentGrade.round(2)
-    # Using XML 
-    # xml_markup = Builder::XmlMarkup.new
-    # xml_markup.instruct! :xml, :encoding => "UTF-8", :version => "1.0"
-    # xml_markup.student do |student|
-    #   student.first_name(session[:first_name])
-    #   student.last_name(session[:last_name])
-    #   student.email(session[:email])
-    #   student.test_id(session[:testID])
-    #   student.final_grade(finalGrade)
-    # end
     Result.create(
       :test_id      => session[:testID], 
       :first_name   => session[:first_name],
@@ -80,8 +87,6 @@ class TestsController < ApplicationController
 
   def show # Show Test Results   	
   end
-
-
 
 
 

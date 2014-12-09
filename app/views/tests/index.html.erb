@@ -8,84 +8,81 @@
 }
 </style>
 
-	<div class="row"> <!-- SETION: TEST DETAILS ROW -->
-		<div class="col-xs-12 formatted-div">
-            <div class="row">
-                <div class="col-xs-12">
-                    <p class="content-description">Welcome to the Testing Platform, you can easily take a test, or create a test of your own. Be sure to review the test description before starting - tests could include time limits for each question. Good luck! </p>
-                </div>
+<div class="row"> <!-- SETION: TEST DETAILS ROW -->
+	<div class="col-xs-12 formatted-div">
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="content-description">Welcome to the Testing Platform, you can easily take a test, or create a test of your own. Be sure to review the test description before starting - tests could include time limits for each question. Good luck! </p>
             </div>
-            <div class="row">
-                <div class="col-xs-6 ">
-                    <h3>Take a Test:</h3>
-
-                    <form method="post" action="/tests">
-                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="padding5">
-                                    <label for=""> Select Test: </label>
-                                </div>
-                                <div class="padding15">
-                                    <label for="">First Name: </label><br>
-                                </div>
-                                <div class="padding5">
-                                    <label for="">Last Name: </label>
-                                </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 ">
+                <h3>Take a Test:</h3>
+                <form method="post" action="/tests">
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="padding5">
+                                <label for=""> Select Test: </label>
                             </div>
-                            <div class="col-xs-6 ">
-                                <div class="padding5">
-                                    <select name="test_name" class="form-control">
-                                    <% @alltests.each do |test|   %>
-                                        <option value="<%= test.name %>"><%= test.name %></option>
-                                    <% end %>
-                                    </select>    
-                                </div>
-                                <div class="padding5">
-                                    <input type="text" name="first_name" class="wide100">
-                                </div>
-                                <div class="padding5">
-                                    <input type="text" name="last_name" class="wide100">
-                                </div>
+                            <div class="padding15">
+                                <label for="">First Name: </label><br>
+                            </div>
+                            <div class="padding5">
+                                <label for="">Last Name: </label>
                             </div>
                         </div>
-                        <input type="submit" value="Take a Test" class="btn btn-success take_create_test_btn wide80">
-                    </form>
-                    
-                </div>
-                <div class="col-xs-6">
-                    <form action="sessions" method="post">
-                        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-                        <h3>Create a Test:</h3>
-                        <h5 class="success_msg"><%= session[:error]; %></h5>
-                        <% session[:error] = nil %>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <div class="padding5">
-                                    <label for="">Email: </label><br>
-                                </div>
-                                <div class="padding5">
-                                    <label for="">Password: </label>
-                                </div>
+                        <div class="col-xs-6 ">
+                            <div class="padding5">
+                                <select name="test_name" class="form-control">
+                                <% @alltests.each do |test|   %>
+                                    <option value="<%= test.name %>"><%= test.name %></option>
+                                <% end %>
+                                </select>    
                             </div>
-                            <div class="col-xs-6 ">
-                                <div class="padding5">
-                                    <input type="email" name="email" class="wide100">
-                                </div>
-                                <div class="padding5">
-                                    <input type="password" name="password" class="wide100">
-                                </div>
+                            <div class="padding5">
+                                <input type="text" name="first_name" class="wide100">
+                            </div>
+                            <div class="padding5">
+                                <input type="text" name="last_name" class="wide100">
                             </div>
                         </div>
-                        <input type='submit' class="btn btn-success take_create_test_btn wide80" value="Login">
-                    </form>
-                    <!-- Button trigger modal -->
-                    <%= link_to 'Registration', "#myModal", data: {toggle: "modal", target: "#myModal"}, class: "btn btn-primary wide80 padding5" %>
-                </div>
+                    </div>
+                    <input type="submit" value="Take a Test" class="btn btn-success take_create_test_btn wide80">
+                </form>
             </div>
-		</div>
-	</div> <!-- END SETION: TEST DETAILS ROW -->
-    
+            <div class="col-xs-6">
+                <form action="sessions" method="post">
+                    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+                    <h3>Create a Test:</h3>
+                    <h5 class="success_msg"><%= session[:error]; %></h5>
+                    <% session[:error] = nil %>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="padding5">
+                                <label for="">Email: </label><br>
+                            </div>
+                            <div class="padding5">
+                                <label for="">Password: </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 ">
+                            <div class="padding5">
+                                <input type="email" name="email" class="wide100">
+                            </div>
+                            <div class="padding5">
+                                <input type="password" name="password" class="wide100">
+                            </div>
+                        </div>
+                    </div>
+                    <input type='submit' class="btn btn-success take_create_test_btn wide80" value="Login">
+                </form>
+                <!-- Button trigger modal -->
+                <%= link_to 'Registration', "#myModal", data: {toggle: "modal", target: "#myModal"}, class: "btn btn-primary wide80 padding5" %>
+            </div>
+        </div>
+	</div>
+</div> <!-- END SETION: TEST DETAILS ROW -->
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -132,7 +129,7 @@
     $('#registrationModal').click(function(){
         $('#myModal').modal('toggle');
     });
-
+    
     $("#registration_form").on('submit', function(){
         $.post(
             $(this).attr('action'),
@@ -151,8 +148,5 @@
             'json'
         );
         return false;
-    });
-
-
-    
+    });    
 </script>

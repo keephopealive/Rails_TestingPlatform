@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   post '/search/name' => 'admintests#getNames'
   post '/search/email' => 'admintests#getEmails'
 
+  # //http://localhost:3000/tests/new/277   tests/277/pretest
+  get '/tests/:id/pretest' => 'tests#pretest'
+
 
   resources :tests, :users, :sessions, :admintests
   get '/logout' => 'sessions#destroy'

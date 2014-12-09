@@ -9,7 +9,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new
-    @user.first_name = params[:first_name] # CHANGE - Utilize <---- 
+    @user.first_name = params[:first_name] 
     @user.last_name = params[:last_name]
     @user.email = params[:email]
     @user.password = params[:password]
@@ -21,7 +21,6 @@ class UsersController < ApplicationController
       # USER CREATION - FAILED # render :text => 'REROUTE'
       render json: { message: "Validation Failed - Please ensure all fields are populated.", status: 'failed' }
     end 
-
   end
 
   def show

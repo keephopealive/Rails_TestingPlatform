@@ -1,28 +1,25 @@
-    <div class="row"> <!-- SECTION: NAVIGATION ROW -->
-		<div class="col-xs-12 formatted-div">        
-            <div class="row">     
-                <div class="col-xs-4 padding5"> 
-                    <h3>User</h3>
-                    <h4><%= session[:first_name] %> <%= session[:last_name] %></h4>
-                </div>
-                <div class="col-xs-4 padding5">
-                    <h3>Test</h3>
-                    <h4><%= session[:test_name] %></h4>
-                    
-                </div>
-                <div class="col-xs-4 padding5">
-                    <h3>Total Questions</h3>
-                    <h4><%= session[:testSize] %></h4>
-                </div>
+<div class="row"> <!-- SECTION: NAVIGATION ROW -->
+	<div class="col-xs-12 formatted-div">        
+        <div class="row">     
+            <div class="col-xs-4 padding5"> 
+                <h3>User</h3>
+                <h4><%= session[:first_name] %> <%= session[:last_name] %></h4>
+            </div>
+            <div class="col-xs-4 padding5">
+                <h3>Test</h3>
+                <h4><%= session[:test_name] %></h4>
+            </div>
+            <div class="col-xs-4 padding5">
+                <h3>Total Questions</h3>
+                <h4><%= session[:testSize] %></h4>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12 formatted-div">
-            <h3>Description</h3>
-            <p>
-                <%= @test.description %>
-            </p>
-            <a href="/tests/new/<%= @test.id %>" id="start"class="btn btn-success btn-lg padding5 wide40">Begin Test!</a>
-        </div>
-    </div> <!-- END SETION: TEST DETAILS ROW -->
+</div>
+<div class="row">
+    <div class="col-xs-12 formatted-div">
+        <h3>Description</h3>
+        <p><%= @test.description %></p>
+        <a href="/tests/new/<%= @test.id %>" id="start"class="btn btn-success btn-lg padding5 wide40">Begin Test!</a>
+    </div>
+</div> <!-- END SETION: TEST DETAILS ROW -->

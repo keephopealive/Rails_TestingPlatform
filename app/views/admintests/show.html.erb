@@ -47,6 +47,7 @@
                             <td>Student Email:</td>
                             <td>Pass/Fail:</td>
                             <td>Score (%):</td>
+                            <td>Date Taken:</td>
                         </tr>
                     </thead>
                     <% @results.each do |result| %>
@@ -67,6 +68,7 @@
                             <% end %>
                         </td>
                         <td><%= result.score %></td>    
+                        <td><%= result.created_at %></td>
                     </tr>
                     <% end %>
                 </table>

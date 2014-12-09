@@ -31,7 +31,6 @@ class User < ActiveRecord::Base
 		Digest::SHA2.hexdigest("#{self.salt}--#{pass}")
 	end
 
-
 	def self.authenticate(email, submitted_password)
 		user = User.find_by(email: email)
 		return nil if user.nil?
