@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204230302) do
+ActiveRecord::Schema.define(version: 20141209184951) do
 
   create_table "answers", force: true do |t|
     t.string   "answer"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20141204230302) do
     t.string   "email"
     t.string   "score"
     t.string   "test_name"
+    t.integer  "overtime"
   end
 
   create_table "tests", force: true do |t|

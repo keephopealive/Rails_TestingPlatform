@@ -48,6 +48,7 @@
                             <td>Pass/Fail:</td>
                             <td>Score (%):</td>
                             <td>Date Taken:</td>
+                            <td>Overtime:</td>
                         </tr>
                     </thead>
                     <% @results.each do |result| %>
@@ -69,6 +70,7 @@
                         </td>
                         <td><%= result.score %></td>    
                         <td><%= result.created_at %></td>
+                        <td><%= result.overtime %></td>
                     </tr>
                     <% end %>
                 </table>

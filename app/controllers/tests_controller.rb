@@ -25,7 +25,7 @@ class TestsController < ApplicationController
   end
 
   def new # New Test
-    session[:timeA] = Time.current()
+    session[:timeA] = Time.current().to_i
     @test = Test.find(session[:testID]) # CHANGE - Test ID?
     session[:testNo] = Test.find(@test.id).id
     session[:testID] = @test.id.to_i
@@ -35,16 +35,19 @@ class TestsController < ApplicationController
   end
 
   def results
-    session[:timeB] = Time.current()
-    userTotalTestTime = session[:timeB].to_i - session[:timeA].to_i
-    testTotalTestTime = 10
+    session[:timeB] = Time.current().to_i
+    userTotalTime = session[:timeB] - session[:timeA]
+    testTotalTime = 5
 
     @totalTestTime = Array.new   
     Test.find(session[:testID]).questions.each do |ques| 
-      testTotalTestTime += ques.timelimit
+      testTotalTime += ques.timelimit
     end
 
-    if(userTotalTestTime > testTotalTestTime)
+    if(userTotalTime > testTotalTime)
+      overtime = userTotalTime - testTotalTime
+    else
+      overtime = nil
     end
 
     @myArray = Array.new
@@ -79,7 +82,8 @@ class TestsController < ApplicationController
       :last_name   => session[:last_name],
       :email   => session[:email],
       :score   => finalGrade,
-      :test_name   => session[:test_name]
+      :test_name   => session[:test_name],
+      :overtime => overtime
     )
     # END
     render :text => "<div class='formatted-div'><h3>Score Results</h3><h5>Number of Correct: #{countCorrect}</h5><h5>Number of Incorrect: #{countIncorrect}</h5><h2>Final Score: #{finalGrade}%</h2></div>"
