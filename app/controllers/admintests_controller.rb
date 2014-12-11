@@ -36,6 +36,8 @@ class AdmintestsController < ApplicationController
 # Render View
 	def show # Show User Results:
 		@results = Result.all
+		# @results = Result.paginate :page => params[:page], :per_page => 30
+		# @results = Result.paginate(:page=> params[:page], :per_page=>10)
 	end
 
 # Ajax

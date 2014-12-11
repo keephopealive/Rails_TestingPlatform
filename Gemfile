@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 # Rails console cleans code
 gem 'hirb'
+gem 'will_paginate', '~> 3.0.6'
 # Adds Footnotes
 gem 'rails-footnotes', '>= 4.0.0', '<5'
 gem 'bootstrap-sass', '~>3.1.1'

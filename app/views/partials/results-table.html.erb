@@ -7,13 +7,15 @@
             <td>Student Email:</td>
             <td>Pass/Fail:</td>
             <td>Score (%):</td>
+            <td>Date Taken:</td>
+            <td>Overtime:</td>
         </tr>
     </thead>
     <% @results.each do |result| %>
     <% if result.score.to_i > 70 %>
-    <tr class="success">
+        <tr class="success">
     <% else %>
-    <tr class="danger">
+        <tr class="danger">
     <% end %>
         <td><%= result.test_name %></td>
         <td><%= result.test_id %></td>
@@ -21,12 +23,14 @@
         <td><%= result.email %></td>
         <td>
             <% if result.score.to_i > 70 %>
-            <%= "Pass" %>
+                <%= "Pass" %>
             <% else %>
-            <%= "Fail" %>
+                <%= "Fail" %>
             <% end %>
         </td>
-        <td><%= result.score %></td>    
+        <td><%= result.score %></td> 
+        <td><%= result.created_at %></td>
+        <td><%= result.overtime %></td>   
     </tr>
     <% end %>
 </table>

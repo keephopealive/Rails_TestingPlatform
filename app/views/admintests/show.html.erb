@@ -4,10 +4,9 @@
             $(this).attr('action'),
             $(this).serialize(),
             function(return_data){
-                console.log(return_data);
+                // console.log(return_data);
                 $('.results-table').html(return_data);
-            },
-            'html'
+            },'html'
         );
     });
 </script>
@@ -32,7 +31,6 @@
             </div>
         </div>
     </div> <!-- END SECTION: SEARCH CRITERIA ROW -->
-
 	<div class="row"> <!-- SECTION: QUESTION ANSWERS & OPTIONS ROW -->
 	    <div class="col-xs-12 formatted-div">
             <div class="row padding15">

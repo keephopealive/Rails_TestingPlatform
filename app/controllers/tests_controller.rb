@@ -91,27 +91,4 @@ class TestsController < ApplicationController
 
   def show # Show Test Results   	
   end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
