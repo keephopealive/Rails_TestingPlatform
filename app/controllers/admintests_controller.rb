@@ -1,5 +1,5 @@
 class AdmintestsController < ApplicationController
-	layout "admin"
+	layout "admin", except: [:getNames, :getEmails]
 
 # Admin Landing Page
 	def index
@@ -35,19 +35,20 @@ class AdmintestsController < ApplicationController
 
 # Render View
 	def show # Show User Results:
-		@results = Result.all
-		# @results = Result.paginate :page => params[:page], :per_page => 30
-		# @results = Result.paginate(:page=> params[:page], :per_page=>10)
+		# @results = Result.all
+		@results = Result.paginate(:page=> params[:page], :per_page=>10)
 	end
 
 # Ajax
 	def getNames
-		@results = Result.where(Result.arel_table[:first_name].matches("%#{params[:name]}%").or(Result.arel_table[:last_name].matches("%#{params[:name]}%")))
-		render :file => "partials/results-table.html.erb", :layout => false, collection: @results
+		@results = Result.where(Result.arel_table[:first_name].matches("%#{params[:name]}%").or(Result.arel_table[:last_name].matches("%#{params[:name]}%"))).paginate(:page => params[:page], :per_page=>10)
+		render :file => "partials/results-table.html.erb"
+		# render :show
 	end
 	def getEmails
-		@results = Result.where(Result.arel_table[:email].matches("%#{params[:email]}%"))
-		render :file => "partials/results-table.html.erb", :layout => false, collection: @results
+		@results = Result.where(Result.arel_table[:email].matches("%#{params[:email]}%")).paginate(:page => params[:page], :per_page=>10)
+		render :file => "partials/results-table.html.erb"
+		# render :show
 	end
 	def updateTestDescription
 		result = Test.find(session[:test_id]).update(:description => params[:description])

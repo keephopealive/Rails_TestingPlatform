@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(document).on('keyup', 'form', function(){
+        
         $.post(
             $(this).attr('action'),
             $(this).serialize(),
@@ -8,6 +9,11 @@
                 $('.results-table').html(return_data);
             },'html'
         );
+        return false;
+    });
+
+    $(document).on('click', 'a', function(){
+        // alert('hey');
     });
 </script>
     <div class="row"> <!-- SECTION: SEARCH CRITERIA ROW -->
@@ -36,6 +42,7 @@
             <div class="row padding15">
                 <h2>Results: </h2>
                 <div class='results-table'>
+                <%= will_paginate @results %>
                  <table class="table table-results addRows">
                     <thead>
                         <tr>

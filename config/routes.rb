@@ -28,9 +28,9 @@ Rails.application.routes.draw do
 
   # AJAX 
   post '/search/name' => 'admintests#getNames'
-  # get '/search/name'  => 'admintests#getNames'
   post '/search/email' => 'admintests#getEmails'
-  # get '/search/email' => 'admintests#getEmails'
+  get '/search/name'  => 'admintests#getNames'
+  get '/search/email' => 'admintests#getEmails'
   # //http://localhost:3000/tests/new/277   tests/277/pretest
   get '/tests/:id/pretest' => 'tests#pretest'
 
