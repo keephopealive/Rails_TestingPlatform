@@ -11,6 +11,7 @@ class AdmintestsController < ApplicationController
 		  session[:last_name] = @current_user.last_name
 		  session[:email] = @current_user.email
 		  @tests = Test.all
+		  # // for testing
 		end
 	end
 
